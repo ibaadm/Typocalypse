@@ -8,23 +8,20 @@ public class TextManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private Player player;
+    [SerializeField] private int lineMaxCharacterCount = 20;
     private List<string> wordBank;
     private List<char> typedText = new List<char>();
     private List<char> currentText = new List<char>();
+    private string nextWord;
+    private string topLine;
+    private string currentLine;
+    private string bottomLine;
 
-    void Start() {
+    void Start()
+    {
 
         LoadWordBank();
-
-        // generate 10 words and add the characters to the currentText list
-        for (int i = 0; i < 10; i++) {
-            string wordToAdd = wordBank[Random.Range(0, wordBank.Count)] + " ";
-            foreach (char c in wordToAdd) {
-                currentText.Add(c);
-            }
-        }
-
-        UpdateTextField();
+        InitializeText();
     }
 
     void Update() {
@@ -45,10 +42,40 @@ public class TextManager : MonoBehaviour {
         }
     }
 
+
+    void InitializeText() {
+        nextWord = wordBank[Random.Range(0, wordBank.Count)] + " ";
+        topLine = FillLine();
+        currentLine = FillLine();
+        bottomLine = FillLine();
+
+        //add the characters of the text to currentText
+        foreach (char c in topLine + '\n' + currentLine + '\n' + bottomLine)
+        {
+            currentText.Add(c);
+        }
+        UpdateTextField();
+    }
+
     // joins the grey typed text and white current text around a vertical bar
     void UpdateTextField() {
         textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
             "|" + string.Join("", currentText);
+        Debug.Log(currentText[0]);
+    }
+
+    // fills a line with words until the line is full
+    string FillLine() {
+        string line = "";
+        while (true) {  
+            if ((line + nextWord).Length <= lineMaxCharacterCount) {
+                line += nextWord;
+                nextWord = wordBank[Random.Range(0, wordBank.Count)] + " ";
+            }
+            else {
+                return line;
+            }
+        }
     }
 
     void CheckForKeyPresses() {
@@ -74,18 +101,23 @@ public class TextManager : MonoBehaviour {
                 }
                 else {
                     ProcessKeyPress(key.displayName.ToLower());
+                    Debug.Log(key.displayName.ToLower());
                 }
             }
         }
     }
 
-    // proccess any key presses, progress if right, regress if wrong
+    // proccess any key presses, progress if right, regress if wrong HANDLE APOSTROPHE
     void ProcessKeyPress(string keyPress) {
-        if (keyPress == "backspace") {
+        if (keyPress == "backspace" && typedText.Count > 0) {
             currentText.Insert(0, typedText[^1]);
             typedText.RemoveAt(typedText.Count - 1);
-            UpdateTextField();
+            if (currentText[0] == '\n') {
+                currentText.Insert(0, typedText[^1]);
+                typedText.RemoveAt(typedText.Count - 1);
+            }
             player.MoveBackward();
+            UpdateTextField();
         }
         else if (keyPress == "up") {
             player.MoveUp();
@@ -97,8 +129,26 @@ public class TextManager : MonoBehaviour {
             if (keyPress[0] == currentText[0]) {
                 typedText.Add(currentText[0]);
                 currentText.RemoveAt(0);
-                UpdateTextField();
+
+                if (string.Join("", typedText) == topLine + '\n' + currentLine) {
+                    topLine = currentLine;
+                    currentLine = bottomLine;
+                    bottomLine = FillLine();
+                    currentText.Clear();
+                    typedText.Clear();
+                    foreach (char c in currentLine + '\n' + bottomLine) {
+                        currentText.Add(c);
+                    }
+                    foreach (char c in topLine + '\n') {
+                        typedText.Add(c);
+                    }
+                }
+                else if (currentText[0] == '\n') {
+                    typedText.Add(currentText[0]);
+                    currentText.RemoveAt(0);
+                }
                 player.MoveForward();
+                UpdateTextField();
             }
         }
     }
