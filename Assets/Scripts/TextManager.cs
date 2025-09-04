@@ -6,23 +6,15 @@ using TMPro;
 
 public class TextManager : MonoBehaviour {
 
-    [SerializeField] TextMeshProUGUI textField;
+    [SerializeField] private TextMeshProUGUI textField;
+    [SerializeField] private Player player;
     private List<string> wordBank;
     private List<char> typedText = new List<char>();
     private List<char> currentText = new List<char>();
-    private List<char> keyPressQueue = new List<char>();
 
     void Start() {
-        // Load words.txt from Resources
-        TextAsset wordFile = Resources.Load<TextAsset>("words");
-        
-        // Split words by lines and store in wordBank list if file found
-        if (wordFile != null) {
-            wordBank = new List<string>(wordFile.text.Split('\n'));
-        }
-        else {
-            Debug.LogError("word file not found");
-        }
+
+        LoadWordBank();
 
         // generate 10 words and add the characters to the currentText list
         for (int i = 0; i < 10; i++) {
@@ -36,39 +28,67 @@ public class TextManager : MonoBehaviour {
     }
 
     void Update() {
+
+        CheckForKeyPresses();
+    }
+
+    void LoadWordBank() {
+        // Load words.txt from Resources
+        TextAsset wordFile = Resources.Load<TextAsset>("words");
+        
+        // Split words by lines and store in wordBank list if file found
+        if (wordFile != null) {
+            wordBank = new List<string>(wordFile.text.Split('\n'));
+        }
+        else {
+            Debug.LogError("word file not found");
+        }
+    }
+
+    // joins the grey typed text and white current text around a vertical bar
+    void UpdateTextField() {
+        textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
+            "|" + string.Join("", currentText);
+    }
+
+    void CheckForKeyPresses() {
         // Check for backspace first
         if (Keyboard.current.backspaceKey.wasPressedThisFrame) {
-            //handle backspace
+            ProcessKeyPress("backspace");
         }
-
         // Handle space separately
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
-            keyPressQueue.Add(' ');
+            ProcessKeyPress(" ");
         }
 
-        // check if any key was pressed, have to handle caps and non-letters
+        // check if any key was pressed, case sensitive, caps lock ignored
         foreach (KeyControl key in Keyboard.current.allKeys) {
-            if (key != null && key.wasPressedThisFrame) {
-                keyPressQueue.Add(key.displayName.ToLower()[0]);
-            }
-        }
-
-        // proccess any key presses, progress if right, nothing if wrong
-        if (keyPressQueue.Count > 0) {
-            if (keyPressQueue[0] == currentText[0]) {
-                keyPressQueue.RemoveAt(0);
-                typedText.Add(currentText[0]);
-                currentText.RemoveAt(0);
-                UpdateTextField();
-            }
-            else {
-                keyPressQueue.RemoveAt(0);
+            if (key != null && key.displayName.Length == 1 && key.wasPressedThisFrame) {
+                if (Keyboard.current.shiftKey.isPressed) {
+                    ProcessKeyPress(key.displayName.ToUpper());
+                }
+                else {
+                    ProcessKeyPress(key.displayName.ToLower());
+                }
             }
         }
     }
 
-    // helper function to update the text field
-    void UpdateTextField() {
-        textField.text = string.Join("", typedText) + "|" + string.Join("", currentText);
+    // proccess any key presses, progress if right, regress if wrong
+    void ProcessKeyPress(string keyPress) {
+        if (keyPress == "backspace") {
+            currentText.Insert(0, typedText[^1]);
+            typedText.RemoveAt(typedText.Count - 1);
+            UpdateTextField();
+            player.MoveBackward();
+        }
+        else {
+            if (keyPress[0] == currentText[0]) {
+                typedText.Add(currentText[0]);
+                currentText.RemoveAt(0);
+                UpdateTextField();
+                player.MoveForward();
+            }
+        }
     }
 }
