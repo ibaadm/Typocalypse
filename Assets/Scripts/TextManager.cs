@@ -52,16 +52,21 @@ public class TextManager : MonoBehaviour {
     }
 
     void CheckForKeyPresses() {
-        // Check for backspace first
+        //handle backspace, space and arrow keys first
         if (Keyboard.current.backspaceKey.wasPressedThisFrame) {
             ProcessKeyPress("backspace");
         }
-        // Handle space separately
         if (Keyboard.current.spaceKey.wasPressedThisFrame) {
             ProcessKeyPress(" ");
         }
+        if (Keyboard.current.upArrowKey.wasPressedThisFrame) {
+            ProcessKeyPress("up");
+        }
+        if (Keyboard.current.downArrowKey.wasPressedThisFrame) {
+            ProcessKeyPress("down");
+        }
 
-        // check if any key was pressed, case sensitive, caps lock ignored
+        // check if any printable key was pressed, case sensitive, caps lock ignored
         foreach (KeyControl key in Keyboard.current.allKeys) {
             if (key != null && key.displayName.Length == 1 && key.wasPressedThisFrame) {
                 if (Keyboard.current.shiftKey.isPressed) {
@@ -81,6 +86,12 @@ public class TextManager : MonoBehaviour {
             typedText.RemoveAt(typedText.Count - 1);
             UpdateTextField();
             player.MoveBackward();
+        }
+        else if (keyPress == "up") {
+            player.MoveUp();
+        }
+        else if (keyPress == "down") {
+            player.MoveDown();
         }
         else {
             if (keyPress[0] == currentText[0]) {
