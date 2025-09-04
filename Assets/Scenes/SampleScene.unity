@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 420231256}
   - component: {fileID: 420231255}
   m_Layer: 0
-  m_Name: Text Generator
+  m_Name: Text Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
