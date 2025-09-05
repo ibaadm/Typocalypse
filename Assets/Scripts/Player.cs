@@ -28,18 +28,23 @@ public class Player : MonoBehaviour {
     }
 
     public void MoveUp() {
+
         if (targetPosition.y < maxHeight) {
             targetPosition += new Vector3(0f, verticalMoveDistance, 0f);
         }
     }
 
     public void MoveDown() {
+
         if (targetPosition.y > minHeight) {
             targetPosition -= new Vector3(0f, verticalMoveDistance, 0f);
         }
     }
     
+    // Player constantly moves towards the target position
+    // Target position is updated with valid key presses
     void Update() {
+
         transform.position = Vector3.MoveTowards
             (transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }

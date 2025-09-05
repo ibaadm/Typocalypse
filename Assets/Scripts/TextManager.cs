@@ -17,8 +17,7 @@ public class TextManager : MonoBehaviour {
     private string currentLine;
     private string bottomLine;
 
-    void Start()
-    {
+    void Start() {
 
         LoadWordBank();
         InitializeText();
@@ -44,14 +43,14 @@ public class TextManager : MonoBehaviour {
 
 
     void InitializeText() {
+        // Fill the lines with random words
         nextWord = wordBank[Random.Range(0, wordBank.Count)] + " ";
         topLine = FillLine();
         currentLine = FillLine();
         bottomLine = FillLine();
 
-        //add the characters of the text to currentText
-        foreach (char c in topLine + '\n' + currentLine + '\n' + bottomLine)
-        {
+        // Add the characters of the text to currentText
+        foreach (char c in topLine + '\n' + currentLine + '\n' + bottomLine) {
             currentText.Add(c);
         }
         UpdateTextField();
@@ -61,10 +60,9 @@ public class TextManager : MonoBehaviour {
     void UpdateTextField() {
         textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
             "|" + string.Join("", currentText);
-        Debug.Log(currentText[0]);
     }
 
-    // fills a line with words until the line is full
+    // Fills a line with words until the line is full
     string FillLine() {
         string line = "";
         while (true) {  
@@ -79,7 +77,7 @@ public class TextManager : MonoBehaviour {
     }
 
     void CheckForKeyPresses() {
-        //handle backspace, space and arrow keys first
+        // Handle backspace, space and arrow keys first
         if (Keyboard.current.backspaceKey.wasPressedThisFrame) {
             ProcessKeyPress("backspace");
         }
@@ -93,7 +91,7 @@ public class TextManager : MonoBehaviour {
             ProcessKeyPress("down");
         }
 
-        // check if any printable key was pressed, case sensitive, caps lock ignored
+        // Check if any printable key was pressed, case sensitive, caps lock ignored
         foreach (KeyControl key in Keyboard.current.allKeys) {
             if (key != null && key.displayName.Length == 1 && key.wasPressedThisFrame) {
                 if (Keyboard.current.shiftKey.isPressed) {
@@ -101,35 +99,42 @@ public class TextManager : MonoBehaviour {
                 }
                 else {
                     ProcessKeyPress(key.displayName.ToLower());
-                    Debug.Log(key.displayName.ToLower());
                 }
             }
         }
     }
 
-    // proccess any key presses, progress if right, regress if wrong HANDLE APOSTROPHE
+    // Proccess any key presses, progress if right, regress if wrong
     void ProcessKeyPress(string keyPress) {
+
+        // Move the last character from typedText to currentText
         if (keyPress == "backspace" && typedText.Count > 0) {
             currentText.Insert(0, typedText[^1]);
             typedText.RemoveAt(typedText.Count - 1);
             if (currentText[0] == '\n') {
+                // At the beginning of a line, move back twice to ignore the \n character
                 currentText.Insert(0, typedText[^1]);
                 typedText.RemoveAt(typedText.Count - 1);
             }
             player.MoveBackward();
             UpdateTextField();
         }
+
         else if (keyPress == "up") {
             player.MoveUp();
         }
+
         else if (keyPress == "down") {
             player.MoveDown();
         }
+
         else {
+            // Move the first character from currentText to typedText
             if (keyPress[0] == currentText[0]) {
                 typedText.Add(currentText[0]);
                 currentText.RemoveAt(0);
 
+                // If the middle line is complete, move the text up
                 if (string.Join("", typedText) == topLine + '\n' + currentLine) {
                     topLine = currentLine;
                     currentLine = bottomLine;
@@ -143,6 +148,7 @@ public class TextManager : MonoBehaviour {
                         typedText.Add(c);
                     }
                 }
+                // If the top line is complete, skip the \n character and move to the middle line
                 else if (currentText[0] == '\n') {
                     typedText.Add(currentText[0]);
                     currentText.RemoveAt(0);
