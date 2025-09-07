@@ -5,6 +5,7 @@ public class ZombieHorde : MonoBehaviour {
 
     [SerializeField] private Transform player;
     [SerializeField] private ZombieHordeAnimation[] zombies;
+    bool stopMoving;
 
     [Header("Base Movement")]
     [SerializeField] private float maxDistance = 2f;
@@ -20,6 +21,7 @@ public class ZombieHorde : MonoBehaviour {
 
     void Start() {
 
+        stopMoving = false;
         moveTimer = moveCooldown;
         // Spawn the zombies in the right place
         transform.position = new Vector2(player.position.x - maxDistance, player.position.y);
@@ -57,7 +59,7 @@ public class ZombieHorde : MonoBehaviour {
     }
 
     // Slowly advance the zombies
-    void MoveTowardsPlayer() {
+    void MoveTowardsPlayer() { if (stopMoving) { return; }
 
         if (moveTimer <= 0f){
             transform.position = new Vector2
@@ -72,5 +74,10 @@ public class ZombieHorde : MonoBehaviour {
         foreach (ZombieHordeAnimation zombie in zombies) {
             zombie.CycleZombieSprite();
         }
+    }
+
+    void OnTriggerEnter2D(Collider2D other) {
+
+        stopMoving = true;
     }
 }

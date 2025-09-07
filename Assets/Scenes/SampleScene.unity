@@ -209,10 +209,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
---- !u!114 &1647424499 stripped
+--- !u!114 &544702211 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6651622813233875621, guid: b7d18c1d0f4a5944d9cf6db1b833c6d9, type: 3}
-  m_PrefabInstance: {fileID: 1025484812494070387}
+  m_PrefabInstance: {fileID: 1806478042}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -220,12 +220,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6f10b8c6af4fe5448c1995bc8612bae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
---- !u!4 &1647424501 stripped
+--- !u!4 &544702213 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1434968653696972695, guid: b7d18c1d0f4a5944d9cf6db1b833c6d9, type: 3}
-  m_PrefabInstance: {fileID: 1025484812494070387}
+  m_PrefabInstance: {fileID: 1806478042}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1025484812494070387
+--- !u!1001 &1806478042
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -235,7 +235,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 368928073347588819, guid: b7d18c1d0f4a5944d9cf6db1b833c6d9, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: Player Blue
       objectReference: {fileID: 0}
     - target: {fileID: 1434968653696972695, guid: b7d18c1d0f4a5944d9cf6db1b833c6d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -297,7 +297,7 @@ PrefabInstance:
     - target: {fileID: 287854726402214353, guid: ef21465309f53b6489c38637d156ec70, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1647424499}
+      objectReference: {fileID: 544702211}
     - target: {fileID: 287854726402214353, guid: ef21465309f53b6489c38637d156ec70, type: 3}
       propertyPath: textField
       value: 
@@ -358,7 +358,7 @@ PrefabInstance:
     - target: {fileID: 5121142938642142055, guid: 9063e68e41a626d44ac48e22219a3680, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1647424501}
+      objectReference: {fileID: 544702213}
     - target: {fileID: 6064867034004074324, guid: 9063e68e41a626d44ac48e22219a3680, type: 3}
       propertyPath: m_Name
       value: Zombie Horde
@@ -419,7 +419,7 @@ PrefabInstance:
     - target: {fileID: 5791127352510652064, guid: dc5d0e56932ff834f892a3cd95a5d7a3, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1647424501}
+      objectReference: {fileID: 544702213}
     - target: {fileID: 6929786103348138991, guid: dc5d0e56932ff834f892a3cd95a5d7a3, type: 3}
       propertyPath: m_Name
       value: Main Camera
@@ -577,7 +577,7 @@ PrefabInstance:
     - target: {fileID: 562780672395387437, guid: 7393b564472d3c541a5a2f60fda27b4f, type: 3}
       propertyPath: player
       value: 
-      objectReference: {fileID: 1647424501}
+      objectReference: {fileID: 544702213}
     - target: {fileID: 7489292290438332034, guid: 7393b564472d3c541a5a2f60fda27b4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -636,5 +636,5 @@ SceneRoots:
   - {fileID: 186131783}
   - {fileID: 3250114145669481303}
   - {fileID: 7886141047491929657}
-  - {fileID: 1025484812494070387}
+  - {fileID: 1806478042}
   - {fileID: 3805223326950377057}

@@ -57,7 +57,7 @@ public class TextManager : MonoBehaviour {
     }
 
     // joins the grey typed text and white current text around a vertical bar
-    void UpdateTextField() {
+    void UpdateTextField() { if (player.isDead) { return; }
         textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
             "|" + string.Join("", currentText);
     }
