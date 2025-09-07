@@ -48,3 +48,7 @@ MonoBehaviour:
   road: {fileID: 8120794509396487865, guid: 66873b8bc223fe04faf4b00881f594c0, type: 3}
   noOfRoadsLeft: 2
   noOfRoadsRight: 4
+  zombieHands: {fileID: 7370914145310403209, guid: 13df57d145ed23145b74cf1ea4e40bab, type: 3}
+  distanceBetweenZombieHands: 2
+  noOfZombieHands: 3
+  zombieHandInitialSpawnOffset: 2.1

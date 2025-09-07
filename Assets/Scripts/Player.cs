@@ -69,4 +69,9 @@ public class Player : MonoBehaviour {
         transform.position = Vector2.MoveTowards
             (transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
+
+    void OnTriggerEnter2D(Collider2D other) {
+
+        Debug.Log("Die");
+    }
 }

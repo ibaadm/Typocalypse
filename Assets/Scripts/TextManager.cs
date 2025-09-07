@@ -108,7 +108,8 @@ public class TextManager : MonoBehaviour {
     void ProcessKeyPress(string keyPress) {
 
         // Move the last character from typedText to currentText
-        if (keyPress == "backspace" && typedText.Count > 0) {
+        if (keyPress == "backspace") {
+            if (typedText.Count <= 0) { return; }
             currentText.Insert(0, typedText[^1]);
             typedText.RemoveAt(typedText.Count - 1);
             if (currentText[0] == '\n') {
