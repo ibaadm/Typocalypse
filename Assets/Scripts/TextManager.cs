@@ -9,6 +9,7 @@ public class TextManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI textField;
     [SerializeField] private Player player;
     [SerializeField] private int lineMaxCharacterCount = 20;
+    [SerializeField] private MenuManager menuManager;
     private List<string> wordBank;
     private List<char> typedText = new List<char>();
     private List<char> currentText = new List<char>();
@@ -57,7 +58,7 @@ public class TextManager : MonoBehaviour {
     }
 
     // joins the grey typed text and white current text around a vertical bar
-    void UpdateTextField() { if (player.isDead) { return; }
+    void UpdateTextField() {
         textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
             "|" + string.Join("", currentText);
     }
@@ -76,7 +77,7 @@ public class TextManager : MonoBehaviour {
         }
     }
 
-    void CheckForKeyPresses() {
+    void CheckForKeyPresses() { if (player.isDead || !menuManager.hasGameStarted) { return; }
         // Handle backspace, space and arrow keys first
         if (Keyboard.current.backspaceKey.wasPressedThisFrame) {
             ProcessKeyPress("backspace");
@@ -109,7 +110,7 @@ public class TextManager : MonoBehaviour {
 
         // Move the last character from typedText to currentText
         if (keyPress == "backspace") {
-            if (typedText.Count <= 0) { return; }
+            /*if (typedText.Count <= 0) { return; }
             currentText.Insert(0, typedText[^1]);
             typedText.RemoveAt(typedText.Count - 1);
             if (currentText[0] == '\n') {
@@ -118,7 +119,7 @@ public class TextManager : MonoBehaviour {
                 typedText.RemoveAt(typedText.Count - 1);
             }
             player.MoveBackward();
-            UpdateTextField();
+            UpdateTextField();*/
         }
 
         else if (keyPress == "up") {

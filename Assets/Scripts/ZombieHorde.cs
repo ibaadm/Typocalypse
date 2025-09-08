@@ -79,5 +79,6 @@ public class ZombieHorde : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other) {
 
         stopMoving = true;
+        FindAnyObjectByType<HUDManager>().StopTime();
     }
 }

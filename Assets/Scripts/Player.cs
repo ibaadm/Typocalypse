@@ -85,4 +85,6 @@ public class Player : MonoBehaviour {
             blood.SetActive(true);
         }
     }
+
+    public float GetHorizontalMoveDistance() { return horizontalMoveDistance; }
 }

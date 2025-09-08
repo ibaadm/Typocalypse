@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Zombie Horde
   - Zombie Hands
+  - HUD
+  - Death
   layers:
   - Default
   - TransparentFX
