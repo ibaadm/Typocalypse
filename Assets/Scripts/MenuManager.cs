@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour {
         HUDPanel = GameObject.FindWithTag("HUD");
         HUDPanel.SetActive(false);
         GameObject.FindWithTag("Death").SetActive(false);
+        AudioManager.instance.EnableLowPassFilterCutoff();
     }
 
     void Update() {
@@ -19,15 +20,30 @@ public class MenuManager : MonoBehaviour {
         if (hasGameStarted) {
             Time.timeScale = 1;
             HUDPanel.SetActive(true);
+            AudioManager.instance.gameplay = true;
             gameObject.SetActive(false);
         }
     }
 
-    public void StartGame() { hasGameStarted = true; }
+    public void StartGame() {
 
-    public void Duel() { Debug.Log("Duel"); }
+        AudioManager.instance.PlayButtonPressSFX();
+        hasGameStarted = true;
+    }
 
-    public void Help() { Debug.Log("Help"); }
+    public void Duel() {
+        
+        AudioManager.instance.PlayButtonPressSFX();
+    }
 
-    public void Quit() { Application.Quit(); }
+    public void Help() {
+        
+        AudioManager.instance.PlayButtonPressSFX();
+    }
+
+    public void Quit() {
+        
+        AudioManager.instance.PlayButtonPressSFX();
+        Application.Quit();
+    }
 }

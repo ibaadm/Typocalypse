@@ -5,6 +5,7 @@ public class ZombieHorde : MonoBehaviour {
 
     [SerializeField] private Transform player;
     [SerializeField] private ZombieHordeAnimation[] zombies;
+    private AudioManager audioManager;
     bool stopMoving;
 
     [Header("Base Movement")]
@@ -21,6 +22,7 @@ public class ZombieHorde : MonoBehaviour {
 
     void Start() {
 
+        audioManager = GameObject.FindAnyObjectByType<AudioManager>();
         stopMoving = false;
         moveTimer = moveCooldown;
         // Spawn the zombies in the right place
@@ -43,6 +45,7 @@ public class ZombieHorde : MonoBehaviour {
         
         TeleportCloser();
         MoveTowardsPlayer();
+        ManageVolume();
 
         moveTimer -= Time.deltaTime;
     }
@@ -74,6 +77,13 @@ public class ZombieHorde : MonoBehaviour {
         foreach (ZombieHordeAnimation zombie in zombies) {
             zombie.CycleZombieSprite();
         }
+    }
+
+    // Adjust the volume based on how close the zombies are to the player
+    void ManageVolume() {
+
+        float distance = (player.position.x - transform.position.x);
+        audioManager.groanVolume = Mathf.Clamp01(1.3f - (distance / maxDistance));
     }
 
     void OnTriggerEnter2D(Collider2D other) {

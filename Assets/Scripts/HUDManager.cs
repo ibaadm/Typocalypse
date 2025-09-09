@@ -30,7 +30,9 @@ public class HUDManager : MonoBehaviour {
         
         if (timeStopped) {
             deathPanel.SetActive(true);
-            gameObject.SetActive(false);
+            transform.GetChild(0).gameObject.SetActive(false);
+            AudioManager.instance.gameplay = false;
+            GetComponent<HUDManager>().enabled = false;
             return;
         }
 

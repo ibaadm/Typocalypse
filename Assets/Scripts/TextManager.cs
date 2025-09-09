@@ -10,6 +10,7 @@ public class TextManager : MonoBehaviour {
     [SerializeField] private Player player;
     [SerializeField] private int lineMaxCharacterCount = 20;
     [SerializeField] private MenuManager menuManager;
+    [SerializeField] private AudioManager audioManager;
     private List<string> wordBank;
     private List<char> typedText = new List<char>();
     private List<char> currentText = new List<char>();
@@ -156,6 +157,7 @@ public class TextManager : MonoBehaviour {
                     currentText.RemoveAt(0);
                 }
                 player.MoveForward();
+                audioManager.PlayKeyboardSFX();
                 UpdateTextField();
             }
         }

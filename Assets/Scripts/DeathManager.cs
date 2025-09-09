@@ -1,15 +1,17 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DeathManager : MonoBehaviour {
 
     public void Replay(){
-        // until i know if we need a gamemanager or not,
-        // just pretend this reloads the scene
-        Debug.Log("Replay");
+        
+        AudioManager.instance.PlayButtonPressSFX();
+        SceneManager.LoadScene("SingleScene");
     }
 
     public void Menu() {
-        //menu
-        Debug.Log("Menu");
+        
+        AudioManager.instance.PlayButtonPressSFX();
+        SceneManager.LoadScene("MenuScene");
     }
 }

@@ -81,8 +81,10 @@ public class Player : MonoBehaviour {
 
         spriteRenderer.sprite = deathSprite;
         isDead = true;
+        AudioManager.instance.PlayFallOverSFX();
         if (other.gameObject.CompareTag("Zombie Horde")) {
             blood.SetActive(true);
+            AudioManager.instance.PlayEatingSFX();
         }
     }
 
