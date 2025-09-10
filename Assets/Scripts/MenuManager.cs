@@ -3,12 +3,15 @@ using UnityEngine.InputSystem;
 
 public class MenuManager : MonoBehaviour {
     
+    [SerializeField] private GameObject helpText;
+    private bool showHelpText = false;
     public bool hasGameStarted = false;
     private GameObject HUDPanel;
 
     void Awake() {
 
         Time.timeScale = 0;
+        helpText.SetActive(false);
         HUDPanel = GameObject.FindWithTag("HUD");
         HUDPanel.SetActive(false);
         GameObject.FindWithTag("Death").SetActive(false);
@@ -39,6 +42,14 @@ public class MenuManager : MonoBehaviour {
     public void Help() {
         
         AudioManager.instance.PlayButtonPressSFX();
+        if (showHelpText) {
+            helpText.SetActive(false);
+            showHelpText = false;
+        }
+        else {
+            helpText.SetActive(true);
+            showHelpText = true;
+        }
     }
 
     public void Quit() {

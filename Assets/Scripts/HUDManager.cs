@@ -15,6 +15,7 @@ public class HUDManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI highScoreText;
 
     [SerializeField] private TextMeshProUGUI timeText;
+    private float timeElapsed = 0f;
     private bool timeStopped = false;
     
     void Start() {
@@ -24,6 +25,7 @@ public class HUDManager : MonoBehaviour {
         scoreText.text = "0";
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = $"HI:{highScore}";
+        timeElapsed = 0f;
     }
 
     void Update() { 
@@ -43,14 +45,15 @@ public class HUDManager : MonoBehaviour {
     void UpdateTime() {
 
         // Displays time as m:ss, mm:ss, mmm:ss etc.
-        int minutes = Mathf.FloorToInt(Time.time / 60);
-        int seconds = Mathf.FloorToInt(Time.time % 60);
+        int minutes = Mathf.FloorToInt(timeElapsed / 60);
+        int seconds = Mathf.FloorToInt(timeElapsed % 60);
         if (minutes < 10) {
             timeText.text = $"{minutes}:{seconds:00}";
         }
         else {
             timeText.text = $"{minutes:D}:{seconds:00}";
         }
+        timeElapsed += Time.deltaTime;
     }
 
     // Update the score when the player moves forward, detected when camera moves forward
