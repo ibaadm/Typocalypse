@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 499093980292784358}
   - component: {fileID: 2522501985022099159}
   m_Layer: 6
-  m_Name: Player Blue
-  m_TagString: Player Blue
+  m_Name: Player Red
+  m_TagString: Player Red
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 8163585835467775988, guid: 6f4fe2e6fd093fe48a4449617a0af8a3, type: 3}
+  m_Sprite: {fileID: 6254184864767561534, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 740488906
-  InScenePlacedSourceGlobalObjectIdHash: 1506953188
+  GlobalObjectIdHash: 2169728993
+  InScenePlacedSourceGlobalObjectIdHash: 560647565
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -138,11 +138,11 @@ MonoBehaviour:
   horizontalMoveDistance: 0.1
   verticalMoveDistance: 0.30555555
   playerSprites:
-  - {fileID: 8163585835467775988, guid: 6f4fe2e6fd093fe48a4449617a0af8a3, type: 3}
-  - {fileID: 8595289308604187583, guid: 6f4fe2e6fd093fe48a4449617a0af8a3, type: 3}
-  - {fileID: 8163585835467775988, guid: 6f4fe2e6fd093fe48a4449617a0af8a3, type: 3}
-  - {fileID: -3817814365494819829, guid: 6f4fe2e6fd093fe48a4449617a0af8a3, type: 3}
-  deathSprite: {fileID: 6459109784243667531, guid: 1bd1784caa2eb7e4abb5a9981b9c4844, type: 3}
+  - {fileID: 6254184864767561534, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
+  - {fileID: -8163970428798775132, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
+  - {fileID: 6254184864767561534, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
+  - {fileID: -7909739534838231498, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
+  deathSprite: {fileID: -1696697546502399634, guid: 4921b5c0d0458714fb0d2e9d65752efe, type: 3}
   blood: {fileID: 6169403202598088949}
   isDead: 0
 --- !u!61 &1798120088154687081

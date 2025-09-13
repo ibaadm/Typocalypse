@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections.Generic;
-public class WorldGenerator : MonoBehaviour {
+using Unity.Netcode;
 
-    [SerializeField] private Transform player;
+public class WorldGenerator : NetworkBehaviour {
+
+    [SerializeField] private Transform playerBlue;
+    private Transform playerRed;
 
     [Header("Roads")]
     [SerializeField] private GameObject road;
@@ -26,6 +29,10 @@ public class WorldGenerator : MonoBehaviour {
         InitializeZombieHands();
     }
 
+    public override void OnNetworkSpawn() {
+        playerRed = GameObject.FindWithTag("Player Red").transform;
+    }
+
     void Update() {
         
         UpdateRoads();
@@ -37,10 +44,10 @@ public class WorldGenerator : MonoBehaviour {
         
         for (int i = 0; i < noOfRoadsLeft + noOfRoadsRight; i++) {
             currentRoads.Add(Instantiate(road, new Vector3
-                (i - noOfRoadsLeft + player.position.x, player.position.y, 0), Quaternion.identity));
+                (i - noOfRoadsLeft + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
         }
 
-        lastRoadUpdateX = player.position.x;
+        lastRoadUpdateX = playerBlue.position.x;
     }
 
     // Spawn zombie hands in front of the player
@@ -48,18 +55,20 @@ public class WorldGenerator : MonoBehaviour {
 
         for (int i = 0; i < noOfZombieHands; i++) {
             currentZombieHands.Add(Instantiate(zombieHands, new Vector3
-                ((i + 1) * distanceBetweenZombieHands + player.position.x, player.position.y, 0), Quaternion.identity));
+                ((i + 1) * distanceBetweenZombieHands + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
         }
 
         // Allow the zombie hands to spawn in front of the player
         // But teleport to the front after it fully passes by the player
-        lastZombieHandsUpdateX = player.position.x + zombieHandInitialSpawnOffset;
+        lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
     }
 
     // When the player moves enough, move the last road to the front
     void UpdateRoads() {
         
-        if (player.position.x > lastRoadUpdateX + 1) {
+        float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
+        
+        if (Mathf.Min(playerBlue.position.x, redX) > lastRoadUpdateX + 1) {
 
             currentRoads[0].transform.position = new Vector3
                 (currentRoads[^1].transform.position.x + 1, currentRoads[0].transform.position.y, 0);
@@ -75,7 +84,9 @@ public class WorldGenerator : MonoBehaviour {
     // When the player moves enough, move the last zombie hand to the front
     void UpdateZombieHands() {
 
-        if (player.position.x > lastZombieHandsUpdateX + distanceBetweenZombieHands) {
+        float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
+
+        if (Mathf.Min(playerBlue.position.x, redX) > lastZombieHandsUpdateX + distanceBetweenZombieHands) {
 
             currentZombieHands[0].transform.position = new Vector3
                 (currentZombieHands[^1].transform.position.x + distanceBetweenZombieHands, currentZombieHands[0].transform.position.y, 0);

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8624890645840298343
+--- !u!1 &4635251925168063052
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,23 +8,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7489292290438332034}
-  - component: {fileID: 7587901474980080932}
-  - component: {fileID: 562780672395387437}
+  - component: {fileID: 4762929359751625897}
+  - component: {fileID: 6881648395569363871}
+  - component: {fileID: 6847022884977987380}
   m_Layer: 0
-  m_Name: World Generator
+  m_Name: Duel Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7489292290438332034
+--- !u!4 &4762929359751625897
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8624890645840298343}
+  m_GameObject: {fileID: 4635251925168063052}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -33,20 +33,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7587901474980080932
+--- !u!114 &6881648395569363871
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8624890645840298343}
+  m_GameObject: {fileID: 4635251925168063052}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1280621394
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 3582275649
+  InScenePlacedSourceGlobalObjectIdHash: 3078095972
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -58,24 +58,17 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
---- !u!114 &562780672395387437
+--- !u!114 &6847022884977987380
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8624890645840298343}
+  m_GameObject: {fileID: 4635251925168063052}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05abf7d393a72e14c91c20cef442004f, type: 3}
+  m_Script: {fileID: 11500000, guid: 2347d52ca26dd7049bdd9af32491d96b, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WorldGenerator
+  m_EditorClassIdentifier: Assembly-CSharp::DuelManager
   ShowTopMostFoldoutHeaderGroup: 1
-  playerBlue: {fileID: 0}
-  road: {fileID: 8120794509396487865, guid: 66873b8bc223fe04faf4b00881f594c0, type: 3}
-  noOfRoadsLeft: 2
-  noOfRoadsRight: 4
-  zombieHands: {fileID: 7370914145310403209, guid: 13df57d145ed23145b74cf1ea4e40bab, type: 3}
-  distanceBetweenZombieHands: 2
-  noOfZombieHands: 3
-  zombieHandInitialSpawnOffset: 2.1
+  playerRedPrefab: {fileID: 368928073347588819, guid: eca636a7acd14174c8eae79929937ed8, type: 3}

@@ -7,7 +7,7 @@ using TMPro;
 public class TextManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI textField;
-    [SerializeField] private Player player;
+    public Player player;
     [SerializeField] private int lineMaxCharacterCount = 20;
     [SerializeField] private MenuManager menuManager;
     [SerializeField] private AudioManager audioManager;

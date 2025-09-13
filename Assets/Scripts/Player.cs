@@ -1,8 +1,9 @@
 using UnityEngine;
+using Unity.Netcode;
 using System.Collections;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class Player : MonoBehaviour {
+public class Player : NetworkBehaviour {
 
     [SerializeField] private float moveSpeed = 0.1f;
     [SerializeField] private float horizontalMoveDistance = 0.5f;
@@ -18,7 +19,7 @@ public class Player : MonoBehaviour {
     private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
 
-    void Start(){
+    void Start() {
 
         targetPosition = transform.position;
         maxHeight = transform.position.y + verticalMoveDistance;
@@ -27,6 +28,29 @@ public class Player : MonoBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         blood.SetActive(false);
         isDead = false;
+    }
+
+    // Disable the blue player on the host and disable the red player on the client
+    public override void OnNetworkSpawn() {
+        
+        if (!IsHost && gameObject.tag == "Player Blue") {
+            enabled = false;
+        }
+        if (!IsHost && gameObject.tag == "Player Red") {
+            FindAnyObjectByType<TextManager>().player = this;
+            RequestOwenershipServerRPC();
+            maxHeight = transform.position.y + 2 * verticalMoveDistance;
+            minHeight = transform.position.y;
+        }
+        if (IsHost && gameObject.tag == "Player Red") {
+            enabled = false;
+        }
+    }
+
+    // Let the client take ownership of the red player
+    [ServerRpc(RequireOwnership = false)]
+    void RequestOwenershipServerRPC(ServerRpcParams rpcParams = default) {
+        GetComponent<NetworkObject>().ChangeOwnership(rpcParams.Receive.SenderClientId);
     }
 
     public void MoveForward() { if (isDead) { return; }
@@ -44,8 +68,8 @@ public class Player : MonoBehaviour {
     }
 
     public void MoveUp() {
-
-        if (targetPosition.y < maxHeight) {
+        
+        if (Mathf.Abs(targetPosition.y - maxHeight) > 0.01f) {
             targetPosition += new Vector2(0f, verticalMoveDistance);
             CyclePlayerSprite();
         }
@@ -53,7 +77,7 @@ public class Player : MonoBehaviour {
 
     public void MoveDown() {
 
-        if (targetPosition.y > minHeight) {
+        if (Mathf.Abs(targetPosition.y - minHeight) > 0.01f) {
             targetPosition -= new Vector2(0f, verticalMoveDistance);
             CyclePlayerSprite();
         }

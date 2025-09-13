@@ -1,27 +1,33 @@
 using UnityEngine;
+using Unity.Netcode;
 
-public class CameraFollower : MonoBehaviour {
+public class CameraFollower : NetworkBehaviour {
 
-    [SerializeField] Transform player;
+    Transform playerBlue;
+    Transform playerRed;
     [SerializeField] float offset = 1f;
     private float greatestX;         
 
     void Start() {
-        if (player == null)
-            Debug.LogError("Player not assigned in FollowPlayerForward!");
-        
-        greatestX = player.position.x;
+
+        playerBlue = GameObject.FindWithTag("Player Blue").transform;
     }
 
-    // Camera follows the player only when they move forward
+    // If dueling, follow the player that is behind
+    public override void OnNetworkSpawn() {
+        playerRed = GameObject.FindWithTag("Player Red").transform;
+    }
+
+    // Camera follows the player
     void Update() {
 
-        float playerX = player.position.x;
-
-        if (playerX > greatestX) {
+        if (playerRed != null && playerRed.position.x < playerBlue.position.x) {
             transform.position = new Vector3
-                (playerX + offset, transform.position.y, transform.position.z);
-            greatestX = playerX;
+                (playerRed.position.x + offset, transform.position.y, transform.position.z);
+        }
+        else {
+            transform.position = new Vector3
+                (playerBlue.position.x + offset, transform.position.y, transform.position.z);
         }
     }
 }

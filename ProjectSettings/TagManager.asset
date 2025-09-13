@@ -8,6 +8,9 @@ TagManager:
   - Zombie Hands
   - HUD
   - Death
+  - Audio Manager
+  - Player Blue
+  - Player Red
   layers:
   - Default
   - TransparentFX
@@ -15,7 +18,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Player
   - 
   - 
   - 

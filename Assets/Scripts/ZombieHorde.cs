@@ -43,8 +43,8 @@ public class ZombieHorde : MonoBehaviour {
 
     void Update() {
         
-        TeleportCloser();
-        MoveTowardsPlayer();
+        //TeleportCloser();
+        //MoveTowardsPlayer();
         ManageVolume();
 
         moveTimer -= Time.deltaTime;
