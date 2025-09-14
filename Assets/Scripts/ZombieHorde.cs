@@ -3,7 +3,8 @@ using System.Collections;
 
 public class ZombieHorde : MonoBehaviour {
 
-    [SerializeField] private Transform player;
+    private Transform playerBlue;
+    private Transform playerRed;
     [SerializeField] private ZombieHordeAnimation[] zombies;
     private AudioManager audioManager;
     bool stopMoving;
@@ -22,11 +23,13 @@ public class ZombieHorde : MonoBehaviour {
 
     void Start() {
 
+        playerBlue = GameObject.FindWithTag("Player Blue").transform;
+        playerRed = GameObject.FindWithTag("Player Red")?.transform;
         audioManager = GameObject.FindAnyObjectByType<AudioManager>();
         stopMoving = false;
         moveTimer = moveCooldown;
         // Spawn the zombies in the right place
-        transform.position = new Vector2(player.position.x - maxDistance, player.position.y);
+        transform.position = new Vector2(playerBlue.position.x - maxDistance, playerBlue.position.y);
 
         StartCoroutine(SpeedUpHorde());
     }
@@ -43,8 +46,8 @@ public class ZombieHorde : MonoBehaviour {
 
     void Update() {
         
-        //TeleportCloser();
-        //MoveTowardsPlayer();
+        TeleportCloser();
+        MoveTowardsPlayer();
         ManageVolume();
 
         moveTimer -= Time.deltaTime;
@@ -53,9 +56,10 @@ public class ZombieHorde : MonoBehaviour {
     // When the zombies leave the camera, teleport them to the edge of the camera
     void TeleportCloser(){
 
-        if (player.position.x - transform.position.x > maxDistance + 0.01f){
+        float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
+        if (Mathf.Min(playerBlue.position.x, redX) - transform.position.x > maxDistance + 0.01f){
             transform.position = new Vector2
-                (player.position.x - maxDistance, transform.position.y);
+                (playerBlue.position.x - maxDistance, transform.position.y);
                 moveTimer = moveCooldown;
                 CycleZombieSprites();
         }
@@ -82,12 +86,18 @@ public class ZombieHorde : MonoBehaviour {
     // Adjust the volume based on how close the zombies are to the player
     void ManageVolume() {
 
-        float distance = (player.position.x - transform.position.x);
+        float distance = (playerBlue.position.x - transform.position.x);
         audioManager.groanVolume = Mathf.Clamp01(1.3f - (distance / maxDistance));
     }
 
     void OnTriggerEnter2D(Collider2D other) {
 
+        other.GetComponent<Player>().Die();
+        other.GetComponent<Player>().GetEaten();
+        if (playerRed != null &&
+            (playerBlue.GetComponent<Player>().isDead || playerRed.GetComponent<Player>().isDead)){
+                return;
+        }
         stopMoving = true;
         FindAnyObjectByType<HUDManager>().StopTime();
     }

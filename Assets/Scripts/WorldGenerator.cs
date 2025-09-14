@@ -29,8 +29,18 @@ public class WorldGenerator : NetworkBehaviour {
         InitializeZombieHands();
     }
 
+    // Handle network changes
     public override void OnNetworkSpawn() {
+
         playerRed = GameObject.FindWithTag("Player Red").transform;
+
+        if (!IsHost) { return; }
+        for (int i = 0; i < noOfZombieHands; i++) {
+            currentZombieHands.Add(Instantiate(zombieHands, new Vector3
+                ((i + 1) * distanceBetweenZombieHands + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
+            currentZombieHands[i].GetComponent<NetworkObject>().Spawn();
+        }
+        lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
     }
 
     void Update() {
@@ -50,8 +60,8 @@ public class WorldGenerator : NetworkBehaviour {
         lastRoadUpdateX = playerBlue.position.x;
     }
 
-    // Spawn zombie hands in front of the player
-    void InitializeZombieHands() {
+    // Spawn zombie hands in front of the player, instantiate when server starts if dueling
+    void InitializeZombieHands() { if (FindAnyObjectByType<DuelManager>() != null) { return; }
 
         for (int i = 0; i < noOfZombieHands; i++) {
             currentZombieHands.Add(Instantiate(zombieHands, new Vector3
@@ -67,7 +77,6 @@ public class WorldGenerator : NetworkBehaviour {
     void UpdateRoads() {
         
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
-        
         if (Mathf.Min(playerBlue.position.x, redX) > lastRoadUpdateX + 1) {
 
             currentRoads[0].transform.position = new Vector3
@@ -82,10 +91,9 @@ public class WorldGenerator : NetworkBehaviour {
     }
 
     // When the player moves enough, move the last zombie hand to the front
-    void UpdateZombieHands() {
+    void UpdateZombieHands() { if (IsClient && !IsHost) { return; }
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
-
         if (Mathf.Min(playerBlue.position.x, redX) > lastZombieHandsUpdateX + distanceBetweenZombieHands) {
 
             currentZombieHands[0].transform.position = new Vector3

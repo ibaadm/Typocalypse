@@ -5,6 +5,8 @@ using System.Collections;
 [RequireComponent(typeof(SpriteRenderer))]
 public class Player : NetworkBehaviour {
 
+    private Player otherPlayer;
+
     [SerializeField] private float moveSpeed = 0.1f;
     [SerializeField] private float horizontalMoveDistance = 0.5f;
     [SerializeField] private float verticalMoveDistance = 0.5f;
@@ -15,7 +17,9 @@ public class Player : NetworkBehaviour {
     [SerializeField] private Sprite[] playerSprites = new Sprite[4];
     [SerializeField] private Sprite deathSprite;
     [SerializeField] private GameObject blood;
+    [SerializeField] private GameObject deadBody;
     [HideInInspector] public bool isDead = false;
+    private bool spectate = false;
     private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
 
@@ -36,14 +40,18 @@ public class Player : NetworkBehaviour {
         if (!IsHost && gameObject.tag == "Player Blue") {
             enabled = false;
         }
+        if (IsHost && gameObject.tag == "Player Red") {
+            enabled = false;
+        }
         if (!IsHost && gameObject.tag == "Player Red") {
             FindAnyObjectByType<TextManager>().player = this;
             RequestOwenershipServerRPC();
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
             minHeight = transform.position.y;
+            otherPlayer = GameObject.FindWithTag("Player Blue").GetComponent<Player>();
         }
-        if (IsHost && gameObject.tag == "Player Red") {
-            enabled = false;
+        else {
+            otherPlayer = GameObject.FindWithTag("Player Red").GetComponent<Player>();
         }
     }
 
@@ -85,6 +93,21 @@ public class Player : NetworkBehaviour {
     
     private void CyclePlayerSprite() { if (isDead) { return; }
 
+        if (IsClient) { CyclePlayerSpriteServerRpc(); return; }
+
+        currentSpriteIndex++;
+        if (currentSpriteIndex >= playerSprites.Length) {
+            currentSpriteIndex = 0;
+        }
+        spriteRenderer.sprite = playerSprites[currentSpriteIndex];
+    }
+
+    [ServerRpc]
+    private void CyclePlayerSpriteServerRpc() {
+        CyclePlayerSpriteClientRpc();
+    }
+    [ClientRpc]
+    private void CyclePlayerSpriteClientRpc() {
         currentSpriteIndex++;
         if (currentSpriteIndex >= playerSprites.Length) {
             currentSpriteIndex = 0;
@@ -94,22 +117,34 @@ public class Player : NetworkBehaviour {
 
     // Player constantly moves towards the target position
     // Target position is updated with valid key presses
-    void Update() { if (isDead) { return; }
+    void Update() {
+        if (spectate) {
+            if (otherPlayer != null && !otherPlayer.isDead) {
+                transform.position = otherPlayer.transform.position;
+            }
+            return; 
+        }
 
         transform.position = Vector2.MoveTowards
             (transform.position, targetPosition, moveSpeed * Time.deltaTime);
     }
 
     // When dead, fall down, splatter blood, and stop other functions with isDead
-    void OnTriggerEnter2D(Collider2D other) {
 
-        spriteRenderer.sprite = deathSprite;
-        isDead = true;
-        AudioManager.instance.PlayFallOverSFX();
-        if (other.gameObject.CompareTag("Zombie Horde")) {
-            blood.SetActive(true);
-            AudioManager.instance.PlayEatingSFX();
+    public void Die() {
+        if (!isDead){
+            AudioManager.instance.PlayFallOverSFX();
+            Instantiate(deadBody, transform.position + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
+            spriteRenderer.enabled = false;
+            GetComponent<BoxCollider2D>().enabled = false;
         }
+        isDead = true;
+    }
+
+    public void GetEaten() {
+        blood.SetActive(true);
+        AudioManager.instance.PlayEatingSFX();
+        spectate = true;
     }
 
     public float GetHorizontalMoveDistance() { return horizontalMoveDistance; }

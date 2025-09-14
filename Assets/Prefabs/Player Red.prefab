@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 2169728993
+  GlobalObjectIdHash: 560647565
   InScenePlacedSourceGlobalObjectIdHash: 560647565
   DeferredDespawnTick: 0
   Ownership: 1
@@ -144,6 +144,7 @@ MonoBehaviour:
   - {fileID: -7909739534838231498, guid: c81b9bc2720ccc944a66f1f5416069e5, type: 3}
   deathSprite: {fileID: -1696697546502399634, guid: 4921b5c0d0458714fb0d2e9d65752efe, type: 3}
   blood: {fileID: 6169403202598088949}
+  deadBody: {fileID: 6987984422140085049, guid: c214d19f6c44fc542aef681dc16d72bd, type: 3}
   isDead: 0
 --- !u!61 &1798120088154687081
 BoxCollider2D:

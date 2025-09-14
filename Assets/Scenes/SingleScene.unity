@@ -520,6 +520,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 7062697468502658694, guid: dc5d0e56932ff834f892a3cd95a5d7a3, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1470254157
+      objectReference: {fileID: 0}
+    - target: {fileID: 7062697468502658694, guid: dc5d0e56932ff834f892a3cd95a5d7a3, type: 3}
+      propertyPath: InScenePlacedSourceGlobalObjectIdHash
+      value: 1832386750
+      objectReference: {fileID: 0}
     - target: {fileID: 7803474850937602231, guid: dc5d0e56932ff834f892a3cd95a5d7a3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

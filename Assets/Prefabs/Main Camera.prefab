@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 7803474850937602231}
   - component: {fileID: 8907703934837849983}
   - component: {fileID: 8950896680994619877}
-  - component: {fileID: 5791127352510652064}
   - component: {fileID: 7062697468502658694}
+  - component: {fileID: 5791127352510652064}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -45,7 +45,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.4156863, g: 0.74509805, b: 0.18823531, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -130,20 +130,6 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
---- !u!114 &5791127352510652064
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6929786103348138991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1457b22239a305b44a8c8d0d7a4660e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CameraFollower
-  player: {fileID: 0}
-  offset: 0.5
 --- !u!114 &7062697468502658694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,7 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 4180210605
+  GlobalObjectIdHash: 1832386750
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -169,3 +155,17 @@ MonoBehaviour:
   AutoObjectParentSync: 1
   SyncOwnerTransformWhenParented: 1
   AllowOwnerToParent: 0
+--- !u!114 &5791127352510652064
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6929786103348138991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1457b22239a305b44a8c8d0d7a4660e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraFollower
+  ShowTopMostFoldoutHeaderGroup: 1
+  offset: 0.5

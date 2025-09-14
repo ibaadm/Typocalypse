@@ -22,12 +22,16 @@ public class CameraFollower : NetworkBehaviour {
     void Update() {
 
         if (playerRed != null && playerRed.position.x < playerBlue.position.x) {
-            transform.position = new Vector3
-                (playerRed.position.x + offset, transform.position.y, transform.position.z);
+            //transform.position = new Vector3
+            //    (playerRed.position.x + offset, transform.position.y, transform.position.z);
+            Vector3 targetPos = new Vector3(playerRed.position.x + offset, transform.position.y, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, 15f * Time.deltaTime);
         }
         else {
-            transform.position = new Vector3
-                (playerBlue.position.x + offset, transform.position.y, transform.position.z);
+            //transform.position = new Vector3
+            //    (playerBlue.position.x + offset, transform.position.y, transform.position.z);
+            Vector3 targetPos = new Vector3(playerBlue.position.x + offset, transform.position.y, transform.position.z);
+            transform.position = Vector3.MoveTowards(transform.position, targetPos, 15f * Time.deltaTime);
         }
     }
 }

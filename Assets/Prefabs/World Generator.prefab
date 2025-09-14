@@ -45,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1280621394
-  InScenePlacedSourceGlobalObjectIdHash: 0
+  GlobalObjectIdHash: 363134132
+  InScenePlacedSourceGlobalObjectIdHash: 363134132
   DeferredDespawnTick: 0
   Ownership: 1
   AlwaysReplicateAsRoot: 0
@@ -73,7 +73,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   playerBlue: {fileID: 0}
   road: {fileID: 8120794509396487865, guid: 66873b8bc223fe04faf4b00881f594c0, type: 3}
-  noOfRoadsLeft: 2
+  noOfRoadsLeft: 4
   noOfRoadsRight: 4
   zombieHands: {fileID: 7370914145310403209, guid: 13df57d145ed23145b74cf1ea4e40bab, type: 3}
   distanceBetweenZombieHands: 2

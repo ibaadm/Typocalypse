@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1653931501552739253}
   - component: {fileID: 1729787054953779344}
+  - component: {fileID: 3849690080207694590}
   - component: {fileID: 7702230012795464449}
   - component: {fileID: 3333552922349573416}
   m_Layer: 0
@@ -92,6 +93,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3849690080207694590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2874969715159592806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e83313640380b747884a61c77437d45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IndividualZombieHand
 --- !u!95 &7702230012795464449
 Animator:
   serializedVersion: 7
@@ -170,6 +183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4741978842235015481}
   - component: {fileID: 5719697072547456931}
+  - component: {fileID: 7751769566688226792}
   - component: {fileID: 6833480110016690382}
   - component: {fileID: 6922686640682396648}
   m_Layer: 0
@@ -252,6 +266,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7751769566688226792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6923472369928520626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e83313640380b747884a61c77437d45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IndividualZombieHand
 --- !u!95 &6833480110016690382
 Animator:
   serializedVersion: 7
@@ -329,6 +355,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2181206661177469171}
+  - component: {fileID: -8358057216438079630}
   - component: {fileID: 2426122023243901104}
   m_Layer: 0
   m_Name: Zombie Hands
@@ -355,6 +382,31 @@ Transform:
   - {fileID: 4741978842235015481}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8358057216438079630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7370914145310403209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
+  GlobalObjectIdHash: 2523141144
+  InScenePlacedSourceGlobalObjectIdHash: 0
+  DeferredDespawnTick: 0
+  Ownership: 1
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+  SyncOwnerTransformWhenParented: 1
+  AllowOwnerToParent: 0
 --- !u!114 &2426122023243901104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054bb6f91bde7f945b986ed24338de99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ZombieHands
+  ShowTopMostFoldoutHeaderGroup: 1
   zombieHands:
   - {fileID: 7976187571481335723}
   - {fileID: 2874969715159592806}
@@ -382,6 +435,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1975404369458568480}
   - component: {fileID: 3990462982307502904}
+  - component: {fileID: 8842234583743666371}
   - component: {fileID: 7941957429119560911}
   - component: {fileID: 4951831719075673482}
   m_Layer: 0
@@ -464,6 +518,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8842234583743666371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7976187571481335723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e83313640380b747884a61c77437d45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IndividualZombieHand
 --- !u!95 &7941957429119560911
 Animator:
   serializedVersion: 7
