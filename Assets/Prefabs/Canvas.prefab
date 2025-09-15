@@ -1226,6 +1226,7 @@ MonoBehaviour:
   scoreText: {fileID: 3275347683036453975}
   player: {fileID: 0}
   deathPanel: {fileID: 1525332936097161838}
+  typingText: {fileID: 5576418395079331407}
   highScoreText: {fileID: 4781629155299346528}
   timeText: {fileID: 4605138610052816010}
 --- !u!1 &3579042138653563788

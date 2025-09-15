@@ -19,7 +19,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private GameObject blood;
     [SerializeField] private GameObject deadBody;
     [HideInInspector] public bool isDead = false;
-    private bool spectate = false;
+    [HideInInspector] public bool isEaten = false;
     private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
 
@@ -32,18 +32,25 @@ public class Player : NetworkBehaviour {
         spriteRenderer = GetComponent<SpriteRenderer>();
         blood.SetActive(false);
         isDead = false;
+
+        StartCoroutine(MoveCoroutine());
     }
 
     // Disable the blue player on the host and disable the red player on the client
     public override void OnNetworkSpawn() {
+
+        bool isBlue = gameObject.tag == "Player Blue";
+        bool isRed = gameObject.tag == "Player Red";
         
-        if (!IsHost && gameObject.tag == "Player Blue") {
+        if (!IsHost && isBlue) {
             enabled = false;
         }
-        if (IsHost && gameObject.tag == "Player Red") {
+        if (IsHost && isRed) {
+            maxHeight = transform.position.y + 2 * verticalMoveDistance;
+            minHeight = transform.position.y;
             enabled = false;
         }
-        if (!IsHost && gameObject.tag == "Player Red") {
+        if (!IsHost && isRed) {
             FindAnyObjectByType<TextManager>().player = this;
             RequestOwenershipServerRPC();
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
@@ -55,35 +62,60 @@ public class Player : NetworkBehaviour {
         }
     }
 
+    // Moves the player to the target position, controlled by key presses
+    IEnumerator MoveCoroutine() {
+
+        while (true) {
+            
+            if (isEaten && otherPlayer != null && !otherPlayer.isDead) {
+                transform.position = otherPlayer.transform.position;
+            }
+
+            else {
+                transform.position = Vector2.MoveTowards
+                    (transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            }
+
+            yield return null;            
+        }
+    }
+
     // Let the client take ownership of the red player
     [ServerRpc(RequireOwnership = false)]
     void RequestOwenershipServerRPC(ServerRpcParams rpcParams = default) {
         GetComponent<NetworkObject>().ChangeOwnership(rpcParams.Receive.SenderClientId);
     }
 
-    public void MoveForward() { if (isDead) { return; }
-
+    public void MoveForward(bool rpc = false) { if (isDead) { return; }
+        
+        if (IsClient && !rpc) {
+            MoveForwardServerRpc();
+            return;
+        }
         targetPosition += new Vector2(horizontalMoveDistance, 0f);
         spriteRenderer.flipX = false;
         CyclePlayerSprite();
     }
 
-    public void MoveBackward() { if (isDead) { return; }
+    public void MoveUp(bool rpc = false) { if (isDead) { return; }
 
-        targetPosition -= new Vector2(horizontalMoveDistance, 0f);
-        spriteRenderer.flipX = true;
-        CyclePlayerSprite();
-    }
+        if (IsClient && !rpc) {
+            MoveUpServerRpc();
+            return;
+        }
 
-    public void MoveUp() {
-        
         if (Mathf.Abs(targetPosition.y - maxHeight) > 0.01f) {
             targetPosition += new Vector2(0f, verticalMoveDistance);
             CyclePlayerSprite();
         }
     }
 
-    public void MoveDown() {
+    public void MoveDown(bool rpc = false) { if (isDead) { return; }
+
+        if (IsClient && !rpc) {
+            MoveDownServerRpc();
+            return;
+        }
 
         if (Mathf.Abs(targetPosition.y - minHeight) > 0.01f) {
             targetPosition -= new Vector2(0f, verticalMoveDistance);
@@ -91,9 +123,7 @@ public class Player : NetworkBehaviour {
         }
     }
     
-    private void CyclePlayerSprite() { if (isDead) { return; }
-
-        if (IsClient) { CyclePlayerSpriteServerRpc(); return; }
+    private void CyclePlayerSprite(bool rpc = false) { if (isDead) { return; }
 
         currentSpriteIndex++;
         if (currentSpriteIndex >= playerSprites.Length) {
@@ -102,49 +132,72 @@ public class Player : NetworkBehaviour {
         spriteRenderer.sprite = playerSprites[currentSpriteIndex];
     }
 
-    [ServerRpc]
-    private void CyclePlayerSpriteServerRpc() {
-        CyclePlayerSpriteClientRpc();
-    }
+    // Run the function on all clients when on a network
+    [ServerRpc(RequireOwnership = false)]
+    void MoveForwardServerRpc() { MoveForwardClientRpc(); }
     [ClientRpc]
-    private void CyclePlayerSpriteClientRpc() {
-        currentSpriteIndex++;
-        if (currentSpriteIndex >= playerSprites.Length) {
-            currentSpriteIndex = 0;
-        }
-        spriteRenderer.sprite = playerSprites[currentSpriteIndex];
-    }
+    void MoveForwardClientRpc() { MoveForward(true); }
+    
+    [ServerRpc(RequireOwnership = false)]
+    void MoveUpServerRpc() { MoveUpClientRpc(); }
+    [ClientRpc]
+    void MoveUpClientRpc() { MoveUp(true); }
 
-    // Player constantly moves towards the target position
-    // Target position is updated with valid key presses
-    void Update() {
-        if (spectate) {
-            if (otherPlayer != null && !otherPlayer.isDead) {
-                transform.position = otherPlayer.transform.position;
-            }
-            return; 
-        }
-
-        transform.position = Vector2.MoveTowards
-            (transform.position, targetPosition, moveSpeed * Time.deltaTime);
-    }
+    [ServerRpc(RequireOwnership = false)]
+    void MoveDownServerRpc() { MoveDownClientRpc(); }
+    [ClientRpc]
+    void MoveDownClientRpc() { MoveDown(true); }
 
     // When dead, fall down, splatter blood, and stop other functions with isDead
 
-    public void Die() {
+    void OnTriggerEnter2D(Collider2D other){
+        if (IsClient){
+            HandleDeathServerRpc(other.gameObject.tag);
+            return;
+        }
         if (!isDead){
             AudioManager.instance.PlayFallOverSFX();
-            Instantiate(deadBody, transform.position + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
+            Vector3 deathPos = transform.position;
+            Instantiate(deadBody, deathPos + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
             spriteRenderer.enabled = false;
-            GetComponent<BoxCollider2D>().enabled = false;
+            FindAnyObjectByType<HUDManager>().DisableTypingText();
         }
         isDead = true;
+        if (other.gameObject.CompareTag("Zombie Horde")) {
+            GetComponent<BoxCollider2D>().enabled = false;
+            blood.transform.SetParent(null);
+            blood.SetActive(true);
+            AudioManager.instance.PlayEatingSFX();
+        }
     }
 
-    public void GetEaten() {
-        blood.SetActive(true);
-        AudioManager.instance.PlayEatingSFX();
-        spectate = true;
+    // Handle death on a network by implementing changes on all clients
+    [ServerRpc(RequireOwnership = false)]
+    private void HandleDeathServerRpc(string tag) {
+        HandleDeathClientRpc(tag);
+    }
+    [ClientRpc]
+    private void HandleDeathClientRpc(string tag) {
+        if (!isDead){
+            AudioManager.instance.PlayFallOverSFX();
+            Vector3 deathPos = transform.position;
+            Instantiate(deadBody, deathPos + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
+            spriteRenderer.enabled = false;
+            if (IsHost && gameObject.tag == "Player Blue" || !IsHost && gameObject.tag == "Player Red") {
+                FindAnyObjectByType<HUDManager>().DisableTypingText();
+            }
+        }
+        isDead = true;
+        if (tag == "Zombie Horde") {
+            isEaten = true;
+            GetComponent<BoxCollider2D>().enabled = false;
+            blood.transform.SetParent(null);
+            blood.SetActive(true);
+            AudioManager.instance.PlayEatingSFX();
+            if (otherPlayer.isEaten) {
+                FindAnyObjectByType<ZombieHorde>().HandleCollision();
+            }
+        }
     }
 
     public float GetHorizontalMoveDistance() { return horizontalMoveDistance; }

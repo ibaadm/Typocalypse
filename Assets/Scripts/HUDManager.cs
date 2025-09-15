@@ -7,6 +7,7 @@ public class HUDManager : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Transform player;
     [SerializeField] private GameObject deathPanel;
+    [SerializeField] private GameObject typingText;
     private float playerStartX;
     private float playerHorizontalMoveDistance;
     private int score  = 0;
@@ -32,7 +33,6 @@ public class HUDManager : MonoBehaviour {
         
         if (timeStopped) {
             deathPanel.SetActive(true);
-            transform.GetChild(0).gameObject.SetActive(false);
             AudioManager.instance.gameplay = false;
             GetComponent<HUDManager>().enabled = false;
             return;
@@ -77,4 +77,6 @@ public class HUDManager : MonoBehaviour {
 
     // When player dies, stop the time
     public void StopTime() { timeStopped = true; }
+
+    public void DisableTypingText() { typingText.SetActive(false); }
 }

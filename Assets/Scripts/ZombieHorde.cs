@@ -90,15 +90,17 @@ public class ZombieHorde : MonoBehaviour {
         audioManager.groanVolume = Mathf.Clamp01(1.3f - (distance / maxDistance));
     }
 
+    // If dueling and only one player is dead, don't stop the game
     void OnTriggerEnter2D(Collider2D other) {
 
-        other.GetComponent<Player>().Die();
-        other.GetComponent<Player>().GetEaten();
-        if (playerRed != null &&
-            (playerBlue.GetComponent<Player>().isDead || playerRed.GetComponent<Player>().isDead)){
-                return;
+        if (playerRed != null) {
+            return;
         }
+        HandleCollision();
+    }
+
+    public void HandleCollision() {
         stopMoving = true;
-        FindAnyObjectByType<HUDManager>().StopTime();
+        FindAnyObjectByType<HUDManager>().StopTime();        
     }
 }
