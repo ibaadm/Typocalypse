@@ -41,13 +41,14 @@ public class Player : NetworkBehaviour {
 
         bool isBlue = gameObject.tag == "Player Blue";
         bool isRed = gameObject.tag == "Player Red";
-        
         if (!IsHost && isBlue) {
+            otherPlayer = GameObject.FindWithTag("Player Red").GetComponent<Player>();
             enabled = false;
         }
         if (IsHost && isRed) {
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
             minHeight = transform.position.y;
+            otherPlayer = GameObject.FindWithTag("Player Blue").GetComponent<Player>();
             enabled = false;
         }
         if (!IsHost && isRed) {
@@ -58,7 +59,7 @@ public class Player : NetworkBehaviour {
             minHeight = transform.position.y;
             otherPlayer = GameObject.FindWithTag("Player Blue").GetComponent<Player>();
         }
-        else {
+        if (IsHost && isBlue) {
             otherPlayer = GameObject.FindWithTag("Player Red").GetComponent<Player>();
         }
     }
