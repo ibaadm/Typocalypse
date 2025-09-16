@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using Unity.Netcode;
+using System.Linq;
 
 public class WorldGenerator : NetworkBehaviour {
 
@@ -34,13 +36,32 @@ public class WorldGenerator : NetworkBehaviour {
 
         playerRed = GameObject.FindWithTag("Player Red").transform;
 
-        if (!IsHost) { return; }
+        if (!IsHost) {
+            StartCoroutine(InitializeZombieHandsClient());
+            return;
+        }
+
         for (int i = 0; i < noOfZombieHands; i++) {
             currentZombieHands.Add(Instantiate(zombieHands, new Vector3
                 ((i + 1) * distanceBetweenZombieHands + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
             currentZombieHands[i].GetComponent<NetworkObject>().Spawn();
         }
         lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
+    }
+
+    IEnumerator InitializeZombieHandsClient() {
+
+        while (currentZombieHands.Count != 3) {
+            yield return new WaitForSeconds(0.2f);
+
+            ZombieHands[] list = FindObjectsByType<ZombieHands>(FindObjectsSortMode.None);
+            foreach (ZombieHands zombieHand in list) {
+                if (!currentZombieHands.Contains(zombieHand.gameObject)) {
+                    currentZombieHands.Add(zombieHand.gameObject);
+                }
+            }
+        }
+        currentZombieHands = currentZombieHands.OrderBy(obj => obj.transform.position.x).ToList();
     }
 
     void Update() {
@@ -91,7 +112,7 @@ public class WorldGenerator : NetworkBehaviour {
     }
 
     // When the player moves enough, move the last zombie hand to the front
-    void UpdateZombieHands() { if (IsClient && !IsHost) { return; }
+    void UpdateZombieHands() {
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
         if (Mathf.Min(playerBlue.position.x, redX) > lastZombieHandsUpdateX + distanceBetweenZombieHands) {
