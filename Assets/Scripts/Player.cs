@@ -52,6 +52,7 @@ public class Player : NetworkBehaviour {
         }
         if (!IsHost && isRed) {
             FindAnyObjectByType<TextManager>().player = this;
+            FindAnyObjectByType<HUDManager>().player = GetComponent<Transform>();
             RequestOwenershipServerRPC();
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
             minHeight = transform.position.y;

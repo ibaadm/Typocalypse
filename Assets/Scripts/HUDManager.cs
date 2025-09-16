@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 public class HUDManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] private Transform player;
+    [SerializeField] public Transform player;
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private GameObject typingText;
     private float playerStartX;
@@ -27,6 +27,7 @@ public class HUDManager : MonoBehaviour {
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = $"HI:{highScore}";
         timeElapsed = 0f;
+        FindAnyObjectByType<TextManager>().HUDManager = this;
     }
 
     void Update() { 
@@ -39,7 +40,6 @@ public class HUDManager : MonoBehaviour {
         }
 
         UpdateTime();
-        UpdateScore();
     }
 
     void UpdateTime() {
@@ -57,13 +57,16 @@ public class HUDManager : MonoBehaviour {
     }
 
     // Update the score when the player moves forward, detected when camera moves forward
-    void UpdateScore() {
+   public void UpdateScore() {
 
-        if (Mathf.Floor(((player.position.x - playerStartX) / playerHorizontalMoveDistance) + 0.01f) > score) {
-            score++;
-            scoreText.text = $"{score}";
-            UpdateHighScore();
-        }
+        //if (Mathf.Floor(((player.position.x - playerStartX) / playerHorizontalMoveDistance) + 0.01f) > score) {
+        //    score++;
+        //    scoreText.text = $"{score}";
+        //    UpdateHighScore();
+        //}
+        score++;
+        scoreText.text = $"{score}";
+        UpdateHighScore();
     }
 
     void UpdateHighScore() {
