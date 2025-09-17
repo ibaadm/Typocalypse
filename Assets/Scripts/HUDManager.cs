@@ -39,6 +39,11 @@ public class HUDManager : MonoBehaviour {
             return;
         }
 
+        if (player.isEaten) {
+            AudioManager.instance.gameplay = false;
+            return;
+        }
+
         UpdateTime();
     }
 
