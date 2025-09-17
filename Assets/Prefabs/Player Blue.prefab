@@ -134,6 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
   ShowTopMostFoldoutHeaderGroup: 1
+  maxDistanceBetweenPlayers: 2.7
   moveSpeed: 1.3
   horizontalMoveDistance: 0.1
   verticalMoveDistance: 0.30555555
@@ -146,6 +147,7 @@ MonoBehaviour:
   blood: {fileID: 6169403202598088949}
   deadBody: {fileID: 6987984422140085049, guid: 70e36baa4cc87aa4480cd6922df9db7e, type: 3}
   isDead: 0
+  isEaten: 0
 --- !u!61 &1798120088154687081
 BoxCollider2D:
   m_ObjectHideFlags: 0

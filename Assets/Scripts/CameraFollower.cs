@@ -6,7 +6,8 @@ public class CameraFollower : NetworkBehaviour {
     Transform playerBlue;
     Transform playerRed;
     [SerializeField] float offset = 1f;
-    private float greatestX;         
+    private float greatestX;
+    private bool stopCamera = false;
 
     void Start() {
 
@@ -19,7 +20,7 @@ public class CameraFollower : NetworkBehaviour {
     }
 
     // Camera follows the player
-    void Update() {
+    void Update() { if (stopCamera) { return; }
 
         if (playerRed != null && playerRed.position.x < playerBlue.position.x) {
             //transform.position = new Vector3
@@ -34,4 +35,6 @@ public class CameraFollower : NetworkBehaviour {
             transform.position = Vector3.MoveTowards(transform.position, targetPos, 15f * Time.deltaTime);
         }
     }
+
+    public void StopCamera() { stopCamera = true; }
 }

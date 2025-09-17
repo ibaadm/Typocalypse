@@ -35,6 +35,7 @@ public class WorldGenerator : NetworkBehaviour {
     public override void OnNetworkSpawn() {
 
         playerRed = GameObject.FindWithTag("Player Red").transform;
+        lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
 
         if (!IsHost) {
             StartCoroutine(InitializeZombieHandsClient());
@@ -46,7 +47,6 @@ public class WorldGenerator : NetworkBehaviour {
                 ((i + 1) * distanceBetweenZombieHands + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
             currentZombieHands[i].GetComponent<NetworkObject>().Spawn();
         }
-        lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
     }
 
     IEnumerator InitializeZombieHandsClient() {
@@ -116,7 +116,6 @@ public class WorldGenerator : NetworkBehaviour {
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
         if (Mathf.Min(playerBlue.position.x, redX) > lastZombieHandsUpdateX + distanceBetweenZombieHands) {
-
             currentZombieHands[0].transform.position = new Vector3
                 (currentZombieHands[^1].transform.position.x + distanceBetweenZombieHands, currentZombieHands[0].transform.position.y, 0);
             lastZombieHandsUpdateX += distanceBetweenZombieHands;

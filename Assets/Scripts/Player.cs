@@ -6,6 +6,7 @@ using System.Collections;
 public class Player : NetworkBehaviour {
 
     private Player otherPlayer;
+    [SerializeField] float maxDistanceBetweenPlayers = 2f;
 
     [SerializeField] private float moveSpeed = 0.1f;
     [SerializeField] private float horizontalMoveDistance = 0.5f;
@@ -88,7 +89,11 @@ public class Player : NetworkBehaviour {
         GetComponent<NetworkObject>().ChangeOwnership(rpcParams.Receive.SenderClientId);
     }
 
-    public void MoveForward(bool rpc = false) { if (isDead) { return; }
+    public void MoveForward(bool rpc = false) {
+
+        if (isDead || transform.position.x - otherPlayer.transform.position.x > maxDistanceBetweenPlayers) {
+            return;
+        }
         
         if (IsClient && !rpc) {
             MoveForwardServerRpc();

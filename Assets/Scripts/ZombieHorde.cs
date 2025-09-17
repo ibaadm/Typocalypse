@@ -101,6 +101,7 @@ public class ZombieHorde : MonoBehaviour {
 
     public void HandleCollision() {
         stopMoving = true;
-        FindAnyObjectByType<HUDManager>().StopTime();        
+        FindAnyObjectByType<HUDManager>().StopTime();
+        FindAnyObjectByType<CameraFollower>().StopCamera();      
     }
 }
