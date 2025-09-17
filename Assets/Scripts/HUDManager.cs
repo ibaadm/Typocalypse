@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 public class HUDManager : MonoBehaviour {
 
     [SerializeField] private TextMeshProUGUI scoreText;
-    [SerializeField] public Transform player;
+    [SerializeField] public Player player;
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private GameObject typingText;
     private float playerStartX;
@@ -21,8 +21,8 @@ public class HUDManager : MonoBehaviour {
     
     void Start() {
         
-        playerStartX = player.position.x;
-        playerHorizontalMoveDistance = player.GetComponent<Player>().GetHorizontalMoveDistance();
+        playerStartX = player.transform.position.x;
+        playerHorizontalMoveDistance = player.GetHorizontalMoveDistance();
         scoreText.text = "0";
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = $"HI:{highScore}";
@@ -42,7 +42,7 @@ public class HUDManager : MonoBehaviour {
         UpdateTime();
     }
 
-    void UpdateTime() {
+    void UpdateTime() { if (player.isEaten) { return; }
 
         // Displays time as m:ss, mm:ss, mmm:ss etc.
         int minutes = Mathf.FloorToInt(timeElapsed / 60);
@@ -56,7 +56,7 @@ public class HUDManager : MonoBehaviour {
         timeElapsed += Time.deltaTime;
     }
 
-    // Update the score when the player moves forward, detected when camera moves forward
+    // Update the score when the player moves forward
    public void UpdateScore() {
 
         //if (Mathf.Floor(((player.position.x - playerStartX) / playerHorizontalMoveDistance) + 0.01f) > score) {
