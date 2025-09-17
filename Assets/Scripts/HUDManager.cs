@@ -10,12 +10,12 @@ public class HUDManager : MonoBehaviour {
     [SerializeField] private GameObject typingText;
     private float playerStartX;
     private float playerHorizontalMoveDistance;
-    private int score  = 0;
+    [HideInInspector] public int score  = 0;
 
     private int highScore;
     [SerializeField] private TextMeshProUGUI highScoreText;
 
-    [SerializeField] private TextMeshProUGUI timeText;
+    public TextMeshProUGUI timeText;
     private float timeElapsed = 0f;
     private bool timeStopped = false;
     
