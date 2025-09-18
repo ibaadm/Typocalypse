@@ -91,7 +91,8 @@ public class Player : NetworkBehaviour {
 
     public void MoveForward(bool rpc = false) {
 
-        if (isDead || transform.position.x - otherPlayer.transform.position.x > maxDistanceBetweenPlayers) {
+        if (isDead || (IsClient &&
+            transform.position.x - otherPlayer.transform.position.x > maxDistanceBetweenPlayers)) {
             return;
         }
         
