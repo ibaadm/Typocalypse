@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DuelScene.unity
     guid: 467ab404d3e80b44a87570bb25ecc290
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WidgetsQuickstart.unity
     guid: ab42e34c34b57284fbf621249f831a2a
   m_configObjects:
