@@ -21,7 +21,7 @@ public class Player : NetworkBehaviour {
     [SerializeField] private GameObject deadBody;
     [HideInInspector] public bool isDead = false;
     [HideInInspector] public bool isEaten = false;
-    private SpriteRenderer spriteRenderer;
+    [SerializeField] private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
 
     [SerializeField] HUDManager HUDManager;
@@ -33,7 +33,6 @@ public class Player : NetworkBehaviour {
         maxHeight = transform.position.y + verticalMoveDistance;
         minHeight = transform.position.y - verticalMoveDistance;
         
-        spriteRenderer = GetComponent<SpriteRenderer>();
         blood.SetActive(false);
         isDead = false;
 
@@ -189,13 +188,16 @@ public class Player : NetworkBehaviour {
     }
     [ClientRpc]
     private void HandleDeathClientRpc(string tag) {
-        if (!isDead){
+        if (!isDead) {
             AudioManager.instance.PlayFallOverSFX();
             Vector3 deathPos = transform.position;
             Instantiate(deadBody, deathPos + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
             spriteRenderer.enabled = false;
             if (IsHost && gameObject.tag == "Player Blue" || !IsHost && gameObject.tag == "Player Red") {
                 FindAnyObjectByType<HUDManager>().DisableTypingText();
+            }
+            if (otherPlayer.isEaten) {
+                FindAnyObjectByType<CameraFollower>().StopCamera();
             }
         }
         isDead = true;

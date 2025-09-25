@@ -148,6 +148,9 @@ MonoBehaviour:
   deadBody: {fileID: 6987984422140085049, guid: c214d19f6c44fc542aef681dc16d72bd, type: 3}
   isDead: 0
   isEaten: 0
+  spriteRenderer: {fileID: 3680147229225907491}
+  HUDManager: {fileID: 0}
+  textManager: {fileID: 0}
 --- !u!61 &1798120088154687081
 BoxCollider2D:
   m_ObjectHideFlags: 0

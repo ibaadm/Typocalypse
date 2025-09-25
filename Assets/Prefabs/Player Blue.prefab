@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.Netcode.Runtime::Unity.Netcode.NetworkObject
-  GlobalObjectIdHash: 1506953188
+  GlobalObjectIdHash: 3608551949
   InScenePlacedSourceGlobalObjectIdHash: 1506953188
   DeferredDespawnTick: 0
   Ownership: 1
@@ -148,6 +148,9 @@ MonoBehaviour:
   deadBody: {fileID: 6987984422140085049, guid: 70e36baa4cc87aa4480cd6922df9db7e, type: 3}
   isDead: 0
   isEaten: 0
+  spriteRenderer: {fileID: 3680147229225907491}
+  HUDManager: {fileID: 0}
+  textManager: {fileID: 0}
 --- !u!61 &1798120088154687081
 BoxCollider2D:
   m_ObjectHideFlags: 0

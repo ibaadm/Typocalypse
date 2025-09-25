@@ -369,6 +369,10 @@ PrefabInstance:
       propertyPath: textManager
       value: 
       objectReference: {fileID: 3250114145669481304}
+    - target: {fileID: 7574169530019627187, guid: b7d18c1d0f4a5944d9cf6db1b833c6d9, type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3608551949
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
