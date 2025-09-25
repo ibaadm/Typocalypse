@@ -20,9 +20,8 @@ public class LobbyManager : NetworkBehaviour {
     public string lobbyCodeInput = "";
     public static LobbyManager instance;
     LobbyEventCallbacks callBacks = new LobbyEventCallbacks();
-    bool shouldBeHost;
+    [HideInInspector] public bool shouldBeHost;
     bool relayCreated = false;
-    bool inDuelScene = false;
 
     void Awake() {
 
@@ -116,10 +115,6 @@ public class LobbyManager : NetworkBehaviour {
                     if (joinedLobby.Data["KEY_START_GAME"].Value != "0" && !relayCreated) {
                         JoinRelay(joinedLobby.Data["KEY_START_GAME"].Value);
                     }
-                    if (IsClient && !inDuelScene) {
-                        LoadDuelSceneServerRpc();
-                        inDuelScene = true;
-                    }
                 }
             }
             catch {
@@ -168,7 +163,7 @@ public class LobbyManager : NetworkBehaviour {
                     { "KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, joinCode)}
                 }
             });
-            NetworkManager.Singleton.StartHost();
+            SceneManager.LoadScene(2);
         }
         catch (RelayServiceException e) {
             Debug.Log(e);
@@ -189,17 +184,10 @@ public class LobbyManager : NetworkBehaviour {
                 joinAllocation.ConnectionData,
                 joinAllocation.HostConnectionData
             );
-
-            NetworkManager.Singleton.StartClient();
+            SceneManager.LoadScene(2);
         }
         catch (RelayServiceException e) {
             Debug.Log(e);
         }
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    void LoadDuelSceneServerRpc() {
-        NetworkManager.Singleton.SceneManager.LoadScene("DuelScene", LoadSceneMode.Single);
-        Debug.Log("switch scenes called");
     }
 }

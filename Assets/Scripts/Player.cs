@@ -24,6 +24,9 @@ public class Player : NetworkBehaviour {
     private SpriteRenderer spriteRenderer;
     private int currentSpriteIndex = 0;
 
+    [SerializeField] HUDManager HUDManager;
+    [SerializeField] TextManager textManager;
+
     void Start() {
 
         targetPosition = transform.position;
@@ -53,8 +56,8 @@ public class Player : NetworkBehaviour {
             enabled = false;
         }
         if (!IsHost && isRed) {
-            FindAnyObjectByType<TextManager>().player = this;
-            FindAnyObjectByType<HUDManager>().player = this;
+            textManager.player = this;
+            HUDManager.player = this;
             RequestOwenershipServerRPC();
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
             minHeight = transform.position.y;
