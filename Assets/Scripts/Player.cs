@@ -71,7 +71,7 @@ public class Player : NetworkBehaviour {
     IEnumerator MoveCoroutine() {
 
         while (true) {
-            
+
             if (isEaten && otherPlayer != null && !otherPlayer.isDead) {
                 transform.position = otherPlayer.transform.position;
             }
@@ -97,7 +97,7 @@ public class Player : NetworkBehaviour {
             transform.position.x - otherPlayer.transform.position.x > maxDistanceBetweenPlayers)) {
             return;
         }
-        
+
         if (IsClient && !rpc) {
             MoveForwardServerRpc();
             return;
@@ -107,7 +107,8 @@ public class Player : NetworkBehaviour {
         CyclePlayerSprite();
     }
 
-    public void MoveUp(bool rpc = false) { if (isDead) { return; }
+    public void MoveUp(bool rpc = false) {
+        if (isDead) { return; }
 
         if (IsClient && !rpc) {
             MoveUpServerRpc();
@@ -120,7 +121,8 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    public void MoveDown(bool rpc = false) { if (isDead) { return; }
+    public void MoveDown(bool rpc = false) {
+        if (isDead) { return; }
 
         if (IsClient && !rpc) {
             MoveDownServerRpc();
@@ -130,7 +132,7 @@ public class Player : NetworkBehaviour {
         if (Mathf.Abs(targetPosition.y - minHeight) > 0.01f) {
             targetPosition -= new Vector2(0f, verticalMoveDistance);
             CyclePlayerSprite();
-        }
+        }                                    
     }
     
     private void CyclePlayerSprite(bool rpc = false) { if (isDead) { return; }

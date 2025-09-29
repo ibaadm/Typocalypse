@@ -26,5 +26,6 @@
         "**/Logs/**": true,
         "**/Build/**": true
     },
-    "dotnet.defaultSolution": "Typocalypse.sln"
+    "dotnet.defaultSolution": "Typocalypse.sln",
+    "dotrush.roslyn.projectOrSolutionFiles": []
 }
