@@ -10,6 +10,7 @@ using Unity.Netcode;
 using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class LobbyManager : NetworkBehaviour {
 
@@ -135,16 +136,6 @@ public class LobbyManager : NetworkBehaviour {
 
     }
 
-    async void LeaveLobby() {
-        try {
-            await LobbyService.Instance.RemovePlayerAsync(hostLobby.Id, AuthenticationService.Instance.PlayerId);
-        }
-        catch {
-            Debug.Log("error leaving lobby");
-        }
-        // need to leave relay too? should change relayCreated to false in that case
-    }
-
     async void CreateRelay() {
         try {
             relayCreated = true;
@@ -189,5 +180,25 @@ public class LobbyManager : NetworkBehaviour {
         catch (RelayServiceException e) {
             Debug.Log(e);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void DisconnectServerRpc() {
+        if (IsHost) {
+            HostDisconnecting();
+        }
+    }
+    async void HostDisconnecting() {
+        hostLobby = await LobbyService.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions {
+            Data = new Dictionary<string, DataObject> {
+                { "KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, "0")}
+            }
+        });
+        await LobbyService.Instance.RemovePlayerAsync(hostLobby.Id, AuthenticationService.Instance.PlayerId);
+        NetworkManager.Singleton.Shutdown();
+    }
+    public override void OnNetworkDespawn() {
+        relayCreated = false;
+        SceneManager.LoadScene("MenuScene");
     }
 }

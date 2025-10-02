@@ -2,7 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using TMPro;
-using System.Collections;
+using Unity.Services.Lobbies;
+using Unity.Services.Lobbies.Models;
+using System.Threading.Tasks;
 
 public class DeathManager : NetworkBehaviour {
 
@@ -16,8 +18,8 @@ public class DeathManager : NetworkBehaviour {
         playerBlueTime.text = playerBlueScore.text = playerRedScore.text = playerRedTime.text = "";
     }
 
-    public void OnPanelEnable() { 
-        if (HUDManager.timeText.text != "0:00"){
+    public void OnPanelEnable() {
+        if (HUDManager.timeText.text != "0:00") {
             if (IsHost) {
                 DisplayDuelScoresClientRpc(HUDManager.timeText.text, HUDManager.score);
             }
@@ -33,25 +35,36 @@ public class DeathManager : NetworkBehaviour {
         DisplayPlayerStats(HUDManager.timeText.text, HUDManager.score, redTime, redScore);
     }
     [ClientRpc]
-    void DisplayDuelScoresClientRpc(string blueTime, int blueScore) { if (IsHost) { return; }
+    void DisplayDuelScoresClientRpc(string blueTime, int blueScore) {
+        if (IsHost) { return; }
 
         DisplayPlayerStats(blueTime, blueScore, HUDManager.timeText.text, HUDManager.score);
     }
-    void DisplayPlayerStats(string blueTime, int blueScore, string redTime, int redScore){
+    void DisplayPlayerStats(string blueTime, int blueScore, string redTime, int redScore) {
         playerBlueTime.text = $"Time {blueTime} |";
         playerBlueScore.text = " Score " + blueScore.ToString();
         playerRedTime.text = $"Time {redTime} |";
         playerRedScore.text = " Score " + redScore.ToString();
     }
 
-    public void Replay(){
-        
+    public void Replay() {
+
+        if (IsClient) {
+
+            return;
+        }
+
         AudioManager.instance.PlayButtonPressSFX();
         SceneManager.LoadScene("SingleScene");
     }
 
     public void Menu() {
-        
+
+        if (IsClient) {
+            LobbyManager.instance.DisconnectServerRpc();
+            return;
+        }
+
         AudioManager.instance.PlayButtonPressSFX();
         SceneManager.LoadScene("MenuScene");
     }
