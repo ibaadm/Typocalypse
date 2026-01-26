@@ -82,7 +82,11 @@ public class WorldGenerator : NetworkBehaviour {
     }
 
     // Spawn zombie hands in front of the player, instantiate when server starts if dueling
-    void InitializeZombieHands() { if (FindAnyObjectByType<NetworkManager>() != null) { return; }
+    void InitializeZombieHands() {
+        if (GameObject.FindWithTag("Player Red")) { 
+            Debug.Log("returned");
+            return; 
+        }
 
         for (int i = 0; i < noOfZombieHands; i++) {
             currentZombieHands.Add(Instantiate(zombieHands, new Vector3
