@@ -2,9 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 using TMPro;
-using Unity.Services.Lobbies;
-using Unity.Services.Lobbies.Models;
-using System.Threading.Tasks;
+using System.Collections;
 
 public class DeathManager : NetworkBehaviour {
 
@@ -13,6 +11,7 @@ public class DeathManager : NetworkBehaviour {
     [SerializeField] private TextMeshProUGUI playerBlueScore;
     [SerializeField] private TextMeshProUGUI playerRedTime;
     [SerializeField] private TextMeshProUGUI playerRedScore;
+    private NetworkVariable<int> replayingPlayers = new NetworkVariable<int>(0);
 
     void Start() {
         playerBlueTime.text = playerBlueScore.text = playerRedScore.text = playerRedTime.text = "";
@@ -49,13 +48,44 @@ public class DeathManager : NetworkBehaviour {
 
     public void Replay() {
 
+        AudioManager.instance.PlayButtonPressSFX();
+
         if (IsClient) {
 
+            //NetworkManager.SceneManager.LoadScene("DuelScene", LoadSceneMode.Single);
+            //SceneManager.LoadScene("DuelScene");
+            IncreaseReplayingPlayersServerRpc();
             return;
         }
+    }
 
-        AudioManager.instance.PlayButtonPressSFX();
-        SceneManager.LoadScene("SingleScene");
+    [ServerRpc(RequireOwnership = false)]
+    void IncreaseReplayingPlayersServerRpc() {
+        /*replayingPlayers.Value++;
+        if (replayingPlayers.Value >= 2) {
+            NetworkManager.SceneManager.LoadScene("DuelScene", LoadSceneMode.Single);
+        }*/
+        LoadDuelSceneClientRpc();
+    }
+    [ClientRpc]
+    void LoadDuelSceneClientRpc() {
+        /*if (!IsHost) {
+            TempServerRpc();
+        }
+        SceneManager.LoadScene("MenuScene");
+        SceneManager.LoadScene("DuelScene");
+        */
+        StartCoroutine(Temp());
+    }
+    [ServerRpc(RequireOwnership = false)]
+    void TempServerRpc() {
+        NetworkManager.Singleton.Shutdown();
+    }
+
+    IEnumerator Temp() {
+        NetworkManager.Singleton.Shutdown();
+        yield return new WaitForSecondsRealtime(5f);        
+        //SceneManager.LoadScene("DuelScene");
     }
 
     public void Menu() {

@@ -22,7 +22,7 @@ public class LobbyManager : NetworkBehaviour {
     public static LobbyManager instance;
     LobbyEventCallbacks callBacks = new LobbyEventCallbacks();
     [HideInInspector] public bool shouldBeHost;
-    bool relayCreated = false;
+    [SerializeField] bool relayCreated = false;
 
     void Awake() {
 
@@ -110,6 +110,7 @@ public class LobbyManager : NetworkBehaviour {
                         Debug.Log("Client joined");
                         CreateRelay();
                     }
+
                 }
                 else {
                     joinedLobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
@@ -138,8 +139,9 @@ public class LobbyManager : NetworkBehaviour {
 
     async void CreateRelay() {
         try {
+            Debug.Log("Relay created");
             relayCreated = true;
-            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(1);
+            Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
             UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
             transport.SetRelayServerData(
@@ -163,6 +165,7 @@ public class LobbyManager : NetworkBehaviour {
 
     async void JoinRelay(string joinCode) {
         try {
+            Debug.Log("Tried joining relay");
             relayCreated = true;
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
