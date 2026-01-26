@@ -57,6 +57,8 @@ public class DeathManager : NetworkBehaviour {
             IncreaseReplayingPlayersServerRpc();
             return;
         }
+
+        SceneManager.LoadScene("SingleScene");
     }
 
     [ServerRpc(RequireOwnership = false)]
