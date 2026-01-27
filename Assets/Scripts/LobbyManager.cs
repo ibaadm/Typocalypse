@@ -18,7 +18,6 @@ public class LobbyManager : NetworkBehaviour {
     Lobby joinedLobby;
     float lobbyHearbeatTimer = 15f;
     float updateLobbyTimer = 1.1f;
-    public string lobbyCodeInput = "";
     public static LobbyManager instance;
     LobbyEventCallbacks callBacks = new LobbyEventCallbacks();
     [HideInInspector] public bool shouldBeHost;
@@ -43,19 +42,11 @@ public class LobbyManager : NetworkBehaviour {
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
+
+        CreateLobby();
     }
 
     void Update() {
-
-        if (Keyboard.current.tabKey.wasPressedThisFrame) {
-            CreateLobby();
-        }
-        if (Keyboard.current.rightShiftKey.wasPressedThisFrame) {
-            JoinLobby(lobbyCodeInput);
-        }
-        if (Keyboard.current.rightCtrlKey.wasPressedThisFrame) {
-            print(hostLobby.Players.Count);
-        }
 
         ManageLobbyHeartbeat();
         UpdateLobby();
@@ -64,6 +55,11 @@ public class LobbyManager : NetworkBehaviour {
     async void CreateLobby() {
 
         try {
+            if (joinedLobby != null || hostLobby != null) {
+                string currentId = joinedLobby?.Id ?? hostLobby?.Id;
+                await LobbyService.Instance.RemovePlayerAsync(currentId, AuthenticationService.Instance.PlayerId);
+                relayCreated = false;
+            }
             string lobbyName = "myLobby";
             int maxPlayers = 2;
 
@@ -124,17 +120,21 @@ public class LobbyManager : NetworkBehaviour {
         }
     }
 
-    async void JoinLobby(string lobbyCode) {
+    public string GetLobbyCode() {
+        return hostLobby.LobbyCode;
+    }
 
-        try {
-            joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode);
-            Debug.Log("should be joined");
-            shouldBeHost = false;
-        }
-        catch {
-            Debug.Log("join error");
-        }
+    public async Task JoinLobby(string lobbyCode) {
 
+        if (joinedLobby != null || hostLobby != null) {
+            string currentId = joinedLobby?.Id ?? hostLobby?.Id;
+            await LobbyService.Instance.RemovePlayerAsync(currentId, AuthenticationService.Instance.PlayerId);
+            relayCreated = false;
+            Debug.Log("Leaving a lobby");
+        }
+        shouldBeHost = false;
+        joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode[..6]);
+        Debug.Log("should be joined");
     }
 
     async void CreateRelay() {
