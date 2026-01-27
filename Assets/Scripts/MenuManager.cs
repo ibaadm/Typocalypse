@@ -16,22 +16,21 @@ public class MenuManager : MonoBehaviour {
         HUDPanel.SetActive(false);
         GameObject.FindWithTag("Death").SetActive(false);
         AudioManager.instance.EnableLowPassFilterCutoff();
-    }
-
-    void Update() {
-
         if (hasGameStarted) {
-            Time.timeScale = 1;
-            HUDPanel.SetActive(true);
-            AudioManager.instance.gameplay = true;
-            gameObject.SetActive(false);
+            StartGame();
         }
     }
 
     public void StartGame() {
 
-        AudioManager.instance.PlayButtonPressSFX();
+        if (!hasGameStarted) {
+            AudioManager.instance.PlayButtonPressSFX();
+        }
         hasGameStarted = true;
+        Time.timeScale = 1;
+        HUDPanel.SetActive(true);
+        AudioManager.instance.gameplay = true;
+        gameObject.SetActive(false);
     }
 
     public void Duel() {
