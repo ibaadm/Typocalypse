@@ -55,7 +55,7 @@ public class DuelManager : NetworkBehaviour {
             yield return null;
         }
 
-        FindAnyObjectByType<MenuManager>().hasGameStarted = true;
+        FindAnyObjectByType<MenuManager>().StartGame();
     }
 
     [ServerRpc (RequireOwnership = false)]
