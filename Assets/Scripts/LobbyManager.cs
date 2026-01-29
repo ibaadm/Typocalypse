@@ -59,6 +59,7 @@ public class LobbyManager : NetworkBehaviour {
                 string currentId = joinedLobby?.Id ?? hostLobby?.Id;
                 await LobbyService.Instance.RemovePlayerAsync(currentId, AuthenticationService.Instance.PlayerId);
                 relayCreated = false;
+                Debug.Log("Had to leave a lobby through CreateLobby");
             }
             string lobbyName = "myLobby";
             int maxPlayers = 2;
@@ -130,7 +131,6 @@ public class LobbyManager : NetworkBehaviour {
             string currentId = joinedLobby?.Id ?? hostLobby?.Id;
             await LobbyService.Instance.RemovePlayerAsync(currentId, AuthenticationService.Instance.PlayerId);
             relayCreated = false;
-            Debug.Log("Leaving a lobby");
         }
         shouldBeHost = false;
         joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode[..6]);
@@ -201,7 +201,27 @@ public class LobbyManager : NetworkBehaviour {
         NetworkManager.Singleton.Shutdown();
     }
     public override void OnNetworkDespawn() {
+        Cleanup();
+    }
+
+    private async void Cleanup() {
+
+        if (joinedLobby != null) {
+            try {
+                await LobbyService.Instance.RemovePlayerAsync(joinedLobby.Id, AuthenticationService.Instance.PlayerId);
+            }
+            catch (LobbyServiceException e) {
+                Debug.Log($"Client leave error (ignoring): {e.Message}"); 
+            }
+            joinedLobby = null;
+        }
+
         relayCreated = false;
+        hostLobby = null;
+        shouldBeHost = false;
+
         SceneManager.LoadScene("MenuScene");
+
+        CreateLobby();
     }
 }
