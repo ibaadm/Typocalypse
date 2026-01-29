@@ -5,7 +5,7 @@ using Unity.Services.Lobbies;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
-using UnityEngine.InputSystem;
+using System.Collections;
 using Unity.Netcode;
 using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
@@ -22,6 +22,7 @@ public class LobbyManager : NetworkBehaviour {
     LobbyEventCallbacks callBacks = new LobbyEventCallbacks();
     [HideInInspector] public bool shouldBeHost;
     [SerializeField] bool relayCreated = false;
+    [HideInInspector] public bool isRetrying = false;
 
     void Awake() {
 
@@ -197,14 +198,23 @@ public class LobbyManager : NetworkBehaviour {
                 { "KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, "0")}
             }
         });
-        await LobbyService.Instance.RemovePlayerAsync(hostLobby.Id, AuthenticationService.Instance.PlayerId);
+        if (!isRetrying) {
+            await LobbyService.Instance.RemovePlayerAsync(hostLobby.Id, AuthenticationService.Instance.PlayerId);
+        }
         NetworkManager.Singleton.Shutdown();
     }
+
     public override void OnNetworkDespawn() {
-        Cleanup();
+        if (!isRetrying) {
+            MenuCleanup();
+        }
+        else {
+            relayCreated = false;
+            isRetrying = false;
+        }
     }
 
-    private async void Cleanup() {
+    private async void MenuCleanup() {
 
         if (joinedLobby != null) {
             try {
@@ -216,6 +226,7 @@ public class LobbyManager : NetworkBehaviour {
             joinedLobby = null;
         }
 
+        isRetrying = false;
         relayCreated = false;
         hostLobby = null;
         shouldBeHost = false;
@@ -224,4 +235,6 @@ public class LobbyManager : NetworkBehaviour {
 
         CreateLobby();
     }
+
+
 }

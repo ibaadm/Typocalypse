@@ -27,5 +27,7 @@
         "**/Build/**": true
     },
     "dotnet.defaultSolution": "Typocalypse.sln",
-    "dotrush.roslyn.projectOrSolutionFiles": []
+    "dotrush.roslyn.projectOrSolutionFiles": [
+        "c:\\Users\\ibaad\\Desktop\\Uni\\Typocalypse\\Typocalypse.sln"
+    ]
 }

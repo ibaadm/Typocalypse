@@ -51,43 +51,21 @@ public class DeathManager : NetworkBehaviour {
         AudioManager.instance.PlayButtonPressSFX();
 
         if (IsClient) {
-
-            //NetworkManager.SceneManager.LoadScene("DuelScene", LoadSceneMode.Single);
-            //SceneManager.LoadScene("DuelScene");
-            IncreaseReplayingPlayersServerRpc();
+            if (!LobbyManager.instance.isRetrying) {
+                LobbyManager.instance.isRetrying = true;
+                IncreasePlayersRetryingServerRpc();
+            }
             return;
         }
 
         SceneManager.LoadScene("SingleScene");
     }
-
-    [ServerRpc(RequireOwnership = false)]
-    void IncreaseReplayingPlayersServerRpc() {
-        /*replayingPlayers.Value++;
+    [ServerRpc (RequireOwnership = false)]
+    void IncreasePlayersRetryingServerRpc() {
+        replayingPlayers.Value++;
         if (replayingPlayers.Value >= 2) {
-            NetworkManager.SceneManager.LoadScene("DuelScene", LoadSceneMode.Single);
-        }*/
-        LoadDuelSceneClientRpc();
-    }
-    [ClientRpc]
-    void LoadDuelSceneClientRpc() {
-        /*if (!IsHost) {
-            TempServerRpc();
+            LobbyManager.instance.DisconnectServerRpc();
         }
-        SceneManager.LoadScene("MenuScene");
-        SceneManager.LoadScene("DuelScene");
-        */
-        StartCoroutine(Temp());
-    }
-    [ServerRpc(RequireOwnership = false)]
-    void TempServerRpc() {
-        NetworkManager.Singleton.Shutdown();
-    }
-
-    IEnumerator Temp() {
-        NetworkManager.Singleton.Shutdown();
-        yield return new WaitForSecondsRealtime(5f);        
-        //SceneManager.LoadScene("DuelScene");
     }
 
     public void Menu() {
