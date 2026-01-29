@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DuelScene.unity
     guid: 467ab404d3e80b44a87570bb25ecc290
-  - enabled: 1
-    path: Assets/Scenes/RetryingScene.unity
-    guid: 2dd4dbf6f2fccc54f94490871a551798
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

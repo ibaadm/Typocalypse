@@ -71,11 +71,18 @@ public class DeathManager : NetworkBehaviour {
     public void Menu() {
 
         if (IsClient) {
+            DecreasePlayersRetryingServerRpc();
             LobbyManager.instance.DisconnectServerRpc();
+            LobbyManager.instance.MenuCleanup();
             return;
         }
 
         AudioManager.instance.PlayButtonPressSFX();
         SceneManager.LoadScene("MenuScene");
+    }
+
+    [ServerRpc (RequireOwnership = false)]
+    void DecreasePlayersRetryingServerRpc() {
+        replayingPlayers.Value--;
     }
 }

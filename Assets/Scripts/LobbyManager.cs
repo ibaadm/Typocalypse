@@ -205,16 +205,13 @@ public class LobbyManager : NetworkBehaviour {
     }
 
     public override void OnNetworkDespawn() {
-        if (!isRetrying) {
-            MenuCleanup();
-        }
-        else {
+        if (isRetrying) {
             relayCreated = false;
             isRetrying = false;
         }
     }
 
-    private async void MenuCleanup() {
+    public async void MenuCleanup() {
 
         if (joinedLobby != null) {
             try {
