@@ -25,7 +25,7 @@ public class ZombieHorde : MonoBehaviour {
 
         playerBlue = GameObject.FindWithTag("Player Blue").transform;
         playerRed = GameObject.FindWithTag("Player Red")?.transform;
-        audioManager = GameObject.FindAnyObjectByType<AudioManager>();
+        audioManager = AudioManager.instance;
         stopMoving = false;
         moveTimer = moveCooldown;
         // Spawn the zombies in the right place
@@ -57,9 +57,10 @@ public class ZombieHorde : MonoBehaviour {
     void TeleportCloser(){
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
-        if (Mathf.Min(playerBlue.position.x, redX) - transform.position.x > maxDistance + 0.01f){
+        float closestPlayerX = Mathf.Min(playerBlue.position.x, redX);
+        if (closestPlayerX - transform.position.x > maxDistance + 0.01f){
             transform.position = new Vector2
-                (playerBlue.position.x - maxDistance, transform.position.y);
+                (closestPlayerX - maxDistance, transform.position.y);
                 moveTimer = moveCooldown;
                 CycleZombieSprites();
         }
@@ -86,7 +87,7 @@ public class ZombieHorde : MonoBehaviour {
     // Adjust the volume based on how close the zombies are to the player
     void ManageVolume() {
 
-        float distance = (playerBlue.position.x - transform.position.x);
+        float distance = playerBlue.position.x - transform.position.x;
         audioManager.groanVolume = Mathf.Clamp01(1.3f - (distance / maxDistance));
     }
 
