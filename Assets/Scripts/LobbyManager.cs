@@ -105,7 +105,6 @@ public class LobbyManager : NetworkBehaviour {
                 if (shouldBeHost) {
                     hostLobby = await LobbyService.Instance.GetLobbyAsync(hostLobby.Id);
                     if (hostLobby.Players.Count == 2 && !relayCreated) {
-                        Debug.Log("Client joined");
                         CreateRelay();
                     }
 

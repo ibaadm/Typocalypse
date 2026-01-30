@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Scripting;
 
 public class AudioManager : MonoBehaviour {
     
@@ -21,7 +20,7 @@ public class AudioManager : MonoBehaviour {
     public float groanVolume = 1f;
     [SerializeField] private AudioSource buttonAudioSource;
 
-    [Header("SFX")] // fall over noise, getting eaten noise, button press noise, zombie ambience noise
+    [Header("SFX")]
     [SerializeField] private AudioClip[] keyboardClips;
     [SerializeField] private float keyboardVolume;
     [SerializeField] private AudioClip fallOverClip;
@@ -31,7 +30,6 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioClip buttonPressClip;
     [SerializeField] private float buttonPressVolume;
 
-    // singleton
     void Awake() {
         if (instance == null) {
             instance = this;
@@ -42,7 +40,6 @@ public class AudioManager : MonoBehaviour {
         }
     }
 
-    // enable music muffling
     public void EnableLowPassFilterCutoff() {
         musicAudioSource.pitch = 0.9f;
         lowPassFilter.cutoffFrequency = lowPassFilterCutoff;

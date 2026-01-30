@@ -56,14 +56,6 @@ public class ZombieHands : NetworkBehaviour {
         }
     }
 
-    void ShuffleZombieHands() {
-
-        for (int i = 0; i < zombieHands.Length; i++) {
-            int r = Random.Range(i, zombieHands.Length);
-            (zombieHands[i], zombieHands[r]) = (zombieHands[r], zombieHands[i]);
-        }
-    }
-
     int[] ChooseRandomHands() {
 
         int r = Random.Range(0, 6);

@@ -1,6 +1,5 @@
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
 
 public class HUDManager : MonoBehaviour {
 
@@ -8,9 +7,9 @@ public class HUDManager : MonoBehaviour {
     [SerializeField] public Player player;
     [SerializeField] private GameObject deathPanel;
     [SerializeField] private GameObject typingText;
-    private float playerStartX;
-    private float playerHorizontalMoveDistance;
     [HideInInspector] public int score  = 0;
+    // private float playerStartX;
+    // private float playerHorizontalMoveDistance;
 
     private int highScore;
     [SerializeField] private TextMeshProUGUI highScoreText;
@@ -21,8 +20,8 @@ public class HUDManager : MonoBehaviour {
     
     void Start() {
         
-        playerStartX = player.transform.position.x;
-        playerHorizontalMoveDistance = player.GetHorizontalMoveDistance();
+        // playerStartX = player.transform.position.x;
+        // playerHorizontalMoveDistance = player.GetHorizontalMoveDistance();
         scoreText.text = "0";
         highScore = PlayerPrefs.GetInt("HighScore", 0);
         highScoreText.text = $"HI:{highScore}";
@@ -49,7 +48,6 @@ public class HUDManager : MonoBehaviour {
 
     void UpdateTime() { if (player.isEaten) { return; }
 
-        // Displays time as m:ss, mm:ss, mmm:ss etc.
         int minutes = Mathf.FloorToInt(timeElapsed / 60);
         int seconds = Mathf.FloorToInt(timeElapsed % 60);
         if (minutes < 10) {
@@ -61,14 +59,13 @@ public class HUDManager : MonoBehaviour {
         timeElapsed += Time.deltaTime;
     }
 
-    // Update the score when the player moves forward
    public void UpdateScore() {
 
-        //if (Mathf.Floor(((player.position.x - playerStartX) / playerHorizontalMoveDistance) + 0.01f) > score) {
+        /*if (Mathf.Floor(((player.position.x - playerStartX) / playerHorizontalMoveDistance) + 0.01f) > score) {
         //    score++;
         //    scoreText.text = $"{score}";
         //    UpdateHighScore();
-        //}
+        }*/
         score++;
         scoreText.text = $"{score}";
         UpdateHighScore();
@@ -83,7 +80,6 @@ public class HUDManager : MonoBehaviour {
         }
     }
 
-    // When player dies, stop the time
     public void StopTime() { timeStopped = true; }
 
     public void DisableTypingText() { typingText.SetActive(false); }

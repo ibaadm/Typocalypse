@@ -28,9 +28,8 @@ public class ZombieHorde : MonoBehaviour {
         audioManager = AudioManager.instance;
         stopMoving = false;
         moveTimer = moveCooldown;
-        // Spawn the zombies in the right place
-        transform.position = new Vector2(playerBlue.position.x - maxDistance, playerBlue.position.y);
 
+        transform.position = new Vector2(playerBlue.position.x - maxDistance, playerBlue.position.y);
         StartCoroutine(SpeedUpHorde());
     }
 
@@ -40,7 +39,6 @@ public class ZombieHorde : MonoBehaviour {
             yield return new WaitForSeconds(speedIncreaseInterval);
             moveCooldown = Mathf.Max(moveCooldownMin, moveCooldown * moveCooldownDecreaseMultiplier);
             moveDistance += moveDistanceIncrease;
-            //Debug.Log($"movecooldown: {moveCooldown}, moveDistance: {moveDistance}");
         }
     }
 
@@ -53,7 +51,6 @@ public class ZombieHorde : MonoBehaviour {
         moveTimer -= Time.deltaTime;
     }
 
-    // When the zombies leave the camera, teleport them to the edge of the camera
     void TeleportCloser(){
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
@@ -66,7 +63,6 @@ public class ZombieHorde : MonoBehaviour {
         }
     }
 
-    // Slowly advance the zombies
     void MoveTowardsPlayer() { if (stopMoving) { return; }
 
         if (moveTimer <= 0f){
@@ -84,14 +80,12 @@ public class ZombieHorde : MonoBehaviour {
         }
     }
 
-    // Adjust the volume based on how close the zombies are to the player
     void ManageVolume() {
 
         float distance = playerBlue.position.x - transform.position.x;
         audioManager.groanVolume = Mathf.Clamp01(1.3f - (distance / maxDistance));
     }
 
-    // If dueling and only one player is dead, don't stop the game
     void OnTriggerEnter2D(Collider2D other) {
 
         if (playerRed != null) {

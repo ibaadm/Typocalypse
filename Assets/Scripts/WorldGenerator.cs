@@ -31,7 +31,6 @@ public class WorldGenerator : NetworkBehaviour {
         InitializeZombieHands();
     }
 
-    // Handle network changes
     public override void OnNetworkSpawn() {
 
         playerRed = GameObject.FindWithTag("Player Red").transform;
@@ -70,7 +69,6 @@ public class WorldGenerator : NetworkBehaviour {
         UpdateZombieHands();
     }
 
-    // Spawn roads to the left and right of the player
     void InitializeRoads() {
         
         for (int i = 0; i < noOfRoadsLeft + noOfRoadsRight; i++) {
@@ -81,7 +79,6 @@ public class WorldGenerator : NetworkBehaviour {
         lastRoadUpdateX = playerBlue.position.x;
     }
 
-    // Spawn zombie hands in front of the player, instantiate when server starts if dueling
     void InitializeZombieHands() { if (GameObject.FindWithTag("Player Red")) { return; }
 
         for (int i = 0; i < noOfZombieHands; i++) {
@@ -89,12 +86,9 @@ public class WorldGenerator : NetworkBehaviour {
                 ((i + 1) * distanceBetweenZombieHands + playerBlue.position.x, playerBlue.position.y, 0), Quaternion.identity));
         }
 
-        // Allow the zombie hands to spawn in front of the player
-        // But teleport to the front after it fully passes by the player
         lastZombieHandsUpdateX = playerBlue.position.x + zombieHandInitialSpawnOffset;
     }
 
-    // When the player moves enough, move the last road to the front
     void UpdateRoads() {
         
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
@@ -104,14 +98,12 @@ public class WorldGenerator : NetworkBehaviour {
                 (currentRoads[^1].transform.position.x + 1, currentRoads[0].transform.position.y, 0);
             lastRoadUpdateX++;
 
-            // Move the first road to the end of the list
             GameObject temp = currentRoads[0];
             currentRoads.RemoveAt(0);
             currentRoads.Add(temp);
         }
     }
 
-    // When the player moves enough, move the last zombie hand to the front
     void UpdateZombieHands() {
 
         float redX = playerRed != null ? playerRed.position.x : float.MaxValue;
@@ -120,7 +112,6 @@ public class WorldGenerator : NetworkBehaviour {
                 (currentZombieHands[^1].transform.position.x + distanceBetweenZombieHands, currentZombieHands[0].transform.position.y, 0);
             lastZombieHandsUpdateX += distanceBetweenZombieHands;
 
-            // Move the first zombie hand to the end of the list
             GameObject temp = currentZombieHands[0];
             currentZombieHands.RemoveAt(0);
             currentZombieHands.Add(temp);

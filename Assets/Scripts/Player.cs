@@ -39,7 +39,6 @@ public class Player : NetworkBehaviour {
         StartCoroutine(MoveCoroutine());
     }
 
-    // Disable the blue player on the host and disable the red player on the client
     public override void OnNetworkSpawn() {
 
         bool isBlue = gameObject.tag == "Player Blue";
@@ -67,7 +66,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    // Moves the player to the target position, controlled by key presses
     IEnumerator MoveCoroutine() {
 
         while (true) {
@@ -85,7 +83,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    // Let the client take ownership of the red player
     [ServerRpc(RequireOwnership = false)]
     void RequestOwenershipServerRPC(ServerRpcParams rpcParams = default) {
         GetComponent<NetworkObject>().ChangeOwnership(rpcParams.Receive.SenderClientId);
@@ -144,7 +141,6 @@ public class Player : NetworkBehaviour {
         spriteRenderer.sprite = playerSprites[currentSpriteIndex];
     }
 
-    // Run the function on all clients when on a network
     [ServerRpc(RequireOwnership = false)]
     void MoveForwardServerRpc() { MoveForwardClientRpc(); }
     [ClientRpc]
@@ -159,8 +155,6 @@ public class Player : NetworkBehaviour {
     void MoveDownServerRpc() { MoveDownClientRpc(); }
     [ClientRpc]
     void MoveDownClientRpc() { MoveDown(true); }
-
-    // When dead, fall down, splatter blood, and stop other functions with isDead
 
     void OnTriggerEnter2D(Collider2D other){
         if (IsClient){
@@ -183,7 +177,6 @@ public class Player : NetworkBehaviour {
         }
     }
 
-    // Handle death on a network by implementing changes on all clients
     [ServerRpc(RequireOwnership = false)]
     private void HandleDeathServerRpc(string tag) {
         HandleDeathClientRpc(tag);

@@ -32,10 +32,8 @@ public class TextManager : MonoBehaviour {
     }
 
     void LoadWordBank() {
-        // Load words.txt from Resources
         TextAsset wordFile = Resources.Load<TextAsset>("words");
-        
-        // Split words by lines and store in wordBank list if file found
+
         if (wordFile != null) {
             wordBank = new List<string>(wordFile.text.Split('\n'));
         }
@@ -46,26 +44,22 @@ public class TextManager : MonoBehaviour {
 
 
     void InitializeText() {
-        // Fill the lines with random words
         nextWord = wordBank[Random.Range(0, wordBank.Count)] + " ";
         topLine = FillLine();
         currentLine = FillLine();
         bottomLine = FillLine();
 
-        // Add the characters of the text to currentText
         foreach (char c in topLine + '\n' + currentLine + '\n' + bottomLine) {
             currentText.Add(c);
         }
         UpdateTextField();
     }
 
-    // joins the grey typed text and white current text around a vertical bar
     void UpdateTextField() {
         textField.text = "<color=#808080>" + string.Join("", typedText) + "</color>" +
             "|" + string.Join("", currentText);
     }
 
-    // Fills a line with words until the line is full
     string FillLine() {
         string line = "";
         while (true) {  
@@ -80,7 +74,6 @@ public class TextManager : MonoBehaviour {
     }
 
     void CheckForKeyPresses() { if (player.isDead || !menuManager.hasGameStarted) { return; }
-        // Handle backspace, space and arrow keys first
         if (Keyboard.current.backspaceKey.wasPressedThisFrame) {
             ProcessKeyPress("backspace");
         }
@@ -94,7 +87,6 @@ public class TextManager : MonoBehaviour {
             ProcessKeyPress("down");
         }
 
-        // Check if any printable key was pressed, case sensitive, caps lock ignored
         foreach (KeyControl key in Keyboard.current.allKeys) {
             if (key != null && key.displayName.Length == 1 && key.wasPressedThisFrame) {
                 if (Keyboard.current.shiftKey.isPressed) {
@@ -107,10 +99,8 @@ public class TextManager : MonoBehaviour {
         }
     }
 
-    // Proccess any key presses, progress if right, regress if wrong
     void ProcessKeyPress(string keyPress) {
 
-        // Move the last character from typedText to currentText
         if (keyPress == "backspace") {
             /*if (typedText.Count <= 0) { return; }
             currentText.Insert(0, typedText[^1]);
