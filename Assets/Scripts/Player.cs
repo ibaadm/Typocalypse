@@ -41,8 +41,8 @@ public class Player : NetworkBehaviour {
 
     public override void OnNetworkSpawn() {
 
-        bool isBlue = gameObject.tag == "Player Blue";
-        bool isRed = gameObject.tag == "Player Red";
+        bool isBlue = gameObject.CompareTag("Player Blue");
+        bool isRed = gameObject.CompareTag("Player Red");
         if (!IsHost && isBlue) {
             otherPlayer = GameObject.FindWithTag("Player Red").GetComponent<Player>();
             enabled = false;
@@ -188,7 +188,7 @@ public class Player : NetworkBehaviour {
             Vector3 deathPos = transform.position;
             Instantiate(deadBody, deathPos + new Vector3(0.05f, 0f, 0f), Quaternion.identity);
             spriteRenderer.enabled = false;
-            if (IsHost && gameObject.tag == "Player Blue" || !IsHost && gameObject.tag == "Player Red") {
+            if (IsHost && gameObject.CompareTag("Player Blue") || !IsHost && gameObject.CompareTag("Player Red")) {
                 FindAnyObjectByType<HUDManager>().DisableTypingText();
             }
             if (otherPlayer.isEaten) {
