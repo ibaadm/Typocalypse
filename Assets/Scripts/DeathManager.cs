@@ -37,8 +37,6 @@ public class DeathManager : NetworkBehaviour {
                 DisplayDuelScoresServerRpc(HUDManager.timeText.text, HUDManager.score);
             }
         }
-        playerBlueTick.text = playerRedTick.text = "<sprite index=0 tint=1>";
-        wasClient = true;
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -57,6 +55,8 @@ public class DeathManager : NetworkBehaviour {
         playerBlueScore.text = " Score " + blueScore.ToString();
         playerRedTime.text = $"Time {redTime} |";
         playerRedScore.text = " Score " + redScore.ToString();
+        wasClient = true;
+        playerBlueTick.text = playerRedTick.text = "<sprite index=0 tint=1>";
     }
 
     public void Replay() {
