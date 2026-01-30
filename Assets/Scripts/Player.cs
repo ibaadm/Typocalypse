@@ -56,7 +56,7 @@ public class Player : NetworkBehaviour {
         if (!IsHost && isRed) {
             textManager.player = this;
             HUDManager.player = this;
-            RequestOwenershipServerRPC();
+            RequestOwnershipServerRPC();
             maxHeight = transform.position.y + 2 * verticalMoveDistance;
             minHeight = transform.position.y;
             otherPlayer = GameObject.FindWithTag("Player Blue").GetComponent<Player>();
@@ -84,7 +84,7 @@ public class Player : NetworkBehaviour {
     }
 
     [ServerRpc(RequireOwnership = false)]
-    void RequestOwenershipServerRPC(ServerRpcParams rpcParams = default) {
+    void RequestOwnershipServerRPC(ServerRpcParams rpcParams = default) {
         GetComponent<NetworkObject>().ChangeOwnership(rpcParams.Receive.SenderClientId);
     }
 
