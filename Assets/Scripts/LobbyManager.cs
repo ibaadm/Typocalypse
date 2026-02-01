@@ -5,7 +5,6 @@ using Unity.Services.Lobbies;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
 using Unity.Services.Relay;
-using System.Collections;
 using Unity.Netcode;
 using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
@@ -145,6 +144,15 @@ public class LobbyManager : NetworkBehaviour {
         shouldBeHost = false;
         joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode[..6]);
         Debug.Log("should be joined");
+    }
+
+    public bool IsMultiplayer() {
+        if ((hostLobby != null && hostLobby.Players.Count > 1) ||
+            (joinedLobby != null && joinedLobby.Players.Count > 1)) {
+            return true;
+        }
+        
+        return false;
     }
 
     async void CreateRelay() {

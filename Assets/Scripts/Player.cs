@@ -29,17 +29,16 @@ public class Player : NetworkBehaviour {
 
     void Start() {
 
-        targetPosition = transform.position;
-        maxHeight = transform.position.y + verticalMoveDistance;
-        minHeight = transform.position.y - verticalMoveDistance;
-        
-        blood.SetActive(false);
-        isDead = false;
+        if (!LobbyManager.instance.IsMultiplayer()) {
+            return;
+        }
 
-        StartCoroutine(MoveCoroutine());
+        InitialisePlayer();
     }
 
     public override void OnNetworkSpawn() {
+
+        InitialisePlayer();
 
         bool isBlue = gameObject.CompareTag("Player Blue");
         bool isRed = gameObject.CompareTag("Player Red");
@@ -64,6 +63,17 @@ public class Player : NetworkBehaviour {
         if (IsHost && isBlue) {
             otherPlayer = GameObject.FindWithTag("Player Red").GetComponent<Player>();
         }
+    }
+
+    void InitialisePlayer() {
+        targetPosition = transform.position;
+        maxHeight = transform.position.y + verticalMoveDistance;
+        minHeight = transform.position.y - verticalMoveDistance;
+        
+        blood.SetActive(false);
+        isDead = false;
+
+        StartCoroutine(MoveCoroutine());
     }
 
     IEnumerator MoveCoroutine() {
