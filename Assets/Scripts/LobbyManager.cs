@@ -36,7 +36,17 @@ public class LobbyManager : NetworkBehaviour {
     }
 
     async void Start() {
-        await UnityServices.InitializeAsync();
+
+        var options = new InitializationOptions();
+        
+        string[] args = System.Environment.GetCommandLineArgs();
+        for (int i = 0; i < args.Length; i++) {
+            if (args[i] == "-profile" && i + 1 < args.Length) {
+                options.SetProfile(args[i + 1]);
+            }
+        }
+
+        await UnityServices.InitializeAsync(options);
 
         AuthenticationService.Instance.SignedIn += () => {
             Debug.Log("Signed in " + AuthenticationService.Instance.PlayerId);
