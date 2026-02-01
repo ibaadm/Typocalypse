@@ -46,6 +46,9 @@ public class MenuManager : MonoBehaviour {
         if (showHelpText) {
             Help();
         }
+        if (!LobbyManager.instance.shouldBeHost) {
+            LobbyManager.instance.CreateLobby();
+        }
         Join();
         mainMenu.SetActive(false);
         duelMenu.SetActive(true);
@@ -53,10 +56,11 @@ public class MenuManager : MonoBehaviour {
     }
 
     public void Create() {
+        createCode.text = LobbyManager.instance.GetLobbyCode();
+        if (createCode.text == "") { return; }
         AudioManager.instance.PlayButtonPressSFX();
         joinSymbol.SetActive(false);
         joinCode.SetActive(false);
-        createCode.text = LobbyManager.instance.GetLobbyCode();
     }
 
     public void Join() {

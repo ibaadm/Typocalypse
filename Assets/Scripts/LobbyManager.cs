@@ -18,7 +18,6 @@ public class LobbyManager : NetworkBehaviour {
     float lobbyHearbeatTimer = 15f;
     float updateLobbyTimer = 1.1f;
     public static LobbyManager instance;
-    LobbyEventCallbacks callBacks = new LobbyEventCallbacks();
     [HideInInspector] public bool shouldBeHost;
     [SerializeField] bool relayCreated = false;
     [HideInInspector] public bool isRetrying = false;
@@ -52,8 +51,6 @@ public class LobbyManager : NetworkBehaviour {
         };
 
         await AuthenticationService.Instance.SignInAnonymouslyAsync();
-
-        CreateLobby();
     }
 
     void Update() {
@@ -62,7 +59,7 @@ public class LobbyManager : NetworkBehaviour {
         UpdateLobby();
     }
 
-    async void CreateLobby() {
+    public async void CreateLobby() {
 
         try {
             if (joinedLobby != null || hostLobby != null) {
@@ -131,7 +128,12 @@ public class LobbyManager : NetworkBehaviour {
     }
 
     public string GetLobbyCode() {
-        return hostLobby.LobbyCode;
+        if (hostLobby != null) {
+            return hostLobby.LobbyCode;
+        }
+        else {
+            return "";
+        }
     }
 
     public async Task JoinLobby(string lobbyCode) {
@@ -246,9 +248,5 @@ public class LobbyManager : NetworkBehaviour {
         shouldBeHost = false;
 
         SceneManager.LoadScene("MenuScene");
-
-        CreateLobby();
     }
-
-
 }
