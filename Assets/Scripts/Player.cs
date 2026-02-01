@@ -29,7 +29,7 @@ public class Player : NetworkBehaviour {
 
     void Start() {
 
-        if (!LobbyManager.instance.IsMultiplayer()) {
+        if (LobbyManager.instance.IsMultiplayer()) {
             return;
         }
 
