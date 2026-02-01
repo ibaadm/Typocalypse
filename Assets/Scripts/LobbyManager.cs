@@ -61,13 +61,20 @@ public class LobbyManager : NetworkBehaviour {
 
     public async void CreateLobby() {
 
-        try {
-            if (joinedLobby != null || hostLobby != null) {
+        if (joinedLobby != null || hostLobby != null) {
+            try {
                 string currentId = joinedLobby?.Id ?? hostLobby?.Id;
                 await LobbyService.Instance.RemovePlayerAsync(currentId, AuthenticationService.Instance.PlayerId);
-                relayCreated = false;
                 Debug.Log("Had to leave a lobby through CreateLobby");
             }
+            catch (LobbyServiceException e) {
+                Debug.LogWarning($"Leaving lobby in CreateLobby failed (safe to ignore): {e.Message}");
+            }
+            relayCreated = false;
+            joinedLobby = null;
+            hostLobby = null;
+        }
+        try {
             string lobbyName = "myLobby";
             int maxPlayers = 2;
 
@@ -83,7 +90,7 @@ public class LobbyManager : NetworkBehaviour {
             shouldBeHost = true;
         }
         catch (LobbyServiceException e) {
-            Debug.Log(e);
+            Debug.Log($"Failed to create lobby: {e}");
         }
     }
 
@@ -109,21 +116,32 @@ public class LobbyManager : NetworkBehaviour {
             updateLobbyTimer = 1.1f;
             try {
                 if (shouldBeHost) {
-                    hostLobby = await LobbyService.Instance.GetLobbyAsync(hostLobby.Id);
+                    if (hostLobby == null) return;
+
+                    Lobby updatedLobby = await LobbyService.Instance.GetLobbyAsync(hostLobby.Id);
+                    if (!shouldBeHost || hostLobby == null || hostLobby.Id != updatedLobby.Id) {
+                        return;
+                    }
+                    hostLobby = updatedLobby;
+
                     if (hostLobby.Players.Count == 2 && !relayCreated) {
                         CreateRelay();
                     }
 
                 }
-                else {
-                    joinedLobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+                else if (joinedLobby != null) {
+                    Lobby updatedLobby = await LobbyService.Instance.GetLobbyAsync(joinedLobby.Id);
+                    if (joinedLobby == null|| joinedLobby.Id != updatedLobby.Id) {
+                        return;
+                    }
+
+                    joinedLobby = updatedLobby;
                     if (joinedLobby.Data["KEY_START_GAME"].Value != "0" && !relayCreated) {
                         JoinRelay(joinedLobby.Data["KEY_START_GAME"].Value);
                     }
                 }
             }
-            catch {
-            }
+            catch {}
         }
     }
 
@@ -145,7 +163,7 @@ public class LobbyManager : NetworkBehaviour {
         }
         shouldBeHost = false;
         joinedLobby = await LobbyService.Instance.JoinLobbyByCodeAsync(lobbyCode[..6]);
-        Debug.Log("should be joined");
+        Debug.Log("joined lobby");
     }
 
     public bool IsMultiplayer() {
@@ -185,7 +203,6 @@ public class LobbyManager : NetworkBehaviour {
 
     async void JoinRelay(string joinCode) {
         try {
-            Debug.Log("Tried joining relay");
             relayCreated = true;
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
@@ -198,6 +215,7 @@ public class LobbyManager : NetworkBehaviour {
                 joinAllocation.ConnectionData,
                 joinAllocation.HostConnectionData
             );
+            Debug.Log("Joined relay");
             SceneManager.LoadScene(2);
         }
         catch (RelayServiceException e) {
@@ -246,7 +264,6 @@ public class LobbyManager : NetworkBehaviour {
         relayCreated = false;
         hostLobby = null;
         shouldBeHost = false;
-
         SceneManager.LoadScene("MenuScene");
     }
 }
