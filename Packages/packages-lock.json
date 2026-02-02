@@ -7,10 +7,10 @@
       "dependencies": {
         "com.unity.test-framework": "1.1.9"
       },
-      "hash": "38fecf55e4fd94ccfe58a92ed8ad1a529ba1694e"
+      "hash": "53e1baac3cde90c46934f82ee1d61802d2bd6651"
     },
     "com.unity.2d.animation": {
-      "version": "12.0.2",
+      "version": "12.0.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -19,19 +19,6 @@
         "com.unity.collections": "1.2.4",
         "com.unity.modules.animation": "1.0.0",
         "com.unity.modules.uielements": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
-    },
-    "com.unity.2d.aseprite": {
-      "version": "2.0.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.2d.common": "11.0.1",
-        "com.unity.2d.sprite": "1.0.0",
-        "com.unity.2d.tilemap": "1.0.0",
-        "com.unity.mathematics": "1.2.6",
-        "com.unity.modules.animation": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
