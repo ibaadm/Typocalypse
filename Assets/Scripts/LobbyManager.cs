@@ -10,6 +10,8 @@ using Unity.Services.Relay.Models;
 using Unity.Netcode.Transports.UTP;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Unity.Networking.Transport.Relay;
+using System.Linq;
 
 public class LobbyManager : NetworkBehaviour {
 
@@ -181,19 +183,42 @@ public class LobbyManager : NetworkBehaviour {
             relayCreated = true;
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(2);
             string joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
+
             UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            transport.SetRelayServerData(
-                allocation.RelayServer.IpV4,
-                (ushort)allocation.RelayServer.Port,
+
+            string connectionType = "dtls";
+            bool isWebSocket = false;
+            
+            #if UNITY_WEBGL
+                connectionType = "wss";
+                isWebSocket = true;
+                transport.UseWebSockets = true;
+            #else
+                transport.UseWebSockets = false;
+            #endif
+
+            var targetEndpoint = allocation.ServerEndpoints.First(conn => conn.ConnectionType == connectionType);
+            Debug.Log($"[Selected Endpoint] {targetEndpoint.ConnectionType} {targetEndpoint.Host}:{targetEndpoint.Port} | WebSocket: {isWebSocket}");
+
+            var relayServerData = new RelayServerData(
+                targetEndpoint.Host,
+                (ushort)targetEndpoint.Port,
                 allocation.AllocationIdBytes,
+                allocation.ConnectionData,
+                new byte[0],
                 allocation.Key,
-                allocation.ConnectionData
+                targetEndpoint.Secure,
+                isWebSocket
             );
+
+            transport.SetRelayServerData(relayServerData);
+
             hostLobby = await LobbyService.Instance.UpdateLobbyAsync(hostLobby.Id, new UpdateLobbyOptions {
                 Data = new Dictionary<string, DataObject> {
                     { "KEY_START_GAME", new DataObject(DataObject.VisibilityOptions.Member, joinCode)}
                 }
             });
+
             SceneManager.LoadScene(2);
         }
         catch (RelayServiceException e) {
@@ -207,14 +232,34 @@ public class LobbyManager : NetworkBehaviour {
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
 
             UnityTransport transport = NetworkManager.Singleton.GetComponent<UnityTransport>();
-            transport.SetRelayServerData(
-                joinAllocation.RelayServer.IpV4,
-                (ushort)joinAllocation.RelayServer.Port,
+
+            string connectionType = "dtls";
+            bool isWebSocket = false;
+            
+            #if UNITY_WEBGL
+                connectionType = "wss";
+                isWebSocket = true;
+                transport.UseWebSockets = true;
+            #else
+                transport.UseWebSockets = false;
+            #endif
+
+            var targetEndpoint = joinAllocation.ServerEndpoints.First(conn => conn.ConnectionType == connectionType);
+            Debug.Log($"[Joining Endpoint] {targetEndpoint.ConnectionType} {targetEndpoint.Host}:{targetEndpoint.Port} | WebSocket: {isWebSocket}");
+
+            var relayServerData = new RelayServerData(
+                targetEndpoint.Host,
+                (ushort)targetEndpoint.Port,
                 joinAllocation.AllocationIdBytes,
-                joinAllocation.Key,
                 joinAllocation.ConnectionData,
-                joinAllocation.HostConnectionData
+                joinAllocation.HostConnectionData,
+                joinAllocation.Key,
+                targetEndpoint.Secure,
+                isWebSocket
             );
+
+            transport.SetRelayServerData(relayServerData);
+
             Debug.Log("Joined relay");
             SceneManager.LoadScene(2);
         }
