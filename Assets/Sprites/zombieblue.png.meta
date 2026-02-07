@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 7e52b58af50188a47a4e756347869dbc
+guid: 2603c7eb07dcb3944a6a1dea4e4d3d60
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2497030649975266422
-    second: zombieblue_0
+      213: -4851751681629756441
+    second: zombieblue 1_0
   - first:
-      213: 1478012235222105052
-    second: zombieblue_1
+      213: -5707868617626990831
+    second: zombieblue 1_1
   - first:
-      213: -1670291093053213163
-    second: zombieblue_2
+      213: 6472710233725202400
+    second: zombieblue 1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: zombieblue_0
+      name: zombieblue 1_0
       rect:
         serializedVersion: 2
         x: 2
@@ -147,14 +147,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 67cd905752c37a220800000000000000
-      internalID: 2497030649975266422
+      spriteID: 7e3ed0e1d8d1bacb0800000000000000
+      internalID: -4851751681629756441
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieblue_1
+      name: zombieblue 1_1
       rect:
         serializedVersion: 2
         x: 11
@@ -169,14 +169,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cdb381e0c44f28410800000000000000
-      internalID: 1478012235222105052
+      spriteID: 1174ebddbb399c0b0800000000000000
+      internalID: -5707868617626990831
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombieblue_2
+      name: zombieblue 1_2
       rect:
         serializedVersion: 2
         x: 22
@@ -191,8 +191,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5167017b91fe1d8e0800000000000000
-      internalID: -1670291093053213163
+      spriteID: 0efe937e9afa3d950800000000000000
+      internalID: 6472710233725202400
       vertices: []
       indices: 
       edges: []
@@ -211,9 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      zombieblue_0: 2497030649975266422
-      zombieblue_1: 1478012235222105052
-      zombieblue_2: -1670291093053213163
+      zombieblue 1_0: -4851751681629756441
+      zombieblue 1_1: -5707868617626990831
+      zombieblue 1_2: 6472710233725202400
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

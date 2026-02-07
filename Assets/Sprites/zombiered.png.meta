@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: aebfccafd8e0b4b468af278e0f39ecf1
+guid: 1df9dcd9edb80554c862bb9aa6c2d658
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6471248340592582113
-    second: zombiered_0
+      213: 771940325339444761
+    second: zombiered 1_0
   - first:
-      213: -5196647872555210904
-    second: zombiered_1
+      213: 7381789406689506836
+    second: zombiered 1_1
   - first:
-      213: 7968880541526530976
-    second: zombiered_2
+      213: -6298699372802215068
+    second: zombiered 1_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +132,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: zombiered_0
+      name: zombiered 1_0
       rect:
         serializedVersion: 2
         x: 2
@@ -147,14 +147,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f12a4ad9be18136a0800000000000000
-      internalID: -6471248340592582113
+      spriteID: 91638afc2ab76ba00800000000000000
+      internalID: 771940325339444761
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombiered_1
+      name: zombiered 1_1
       rect:
         serializedVersion: 2
         x: 11
@@ -169,14 +169,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 867ae8dfa4cc1e7b0800000000000000
-      internalID: -5196647872555210904
+      spriteID: 4163870ea52617660800000000000000
+      internalID: 7381789406689506836
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: zombiered_2
+      name: zombiered 1_2
       rect:
         serializedVersion: 2
         x: 22
@@ -191,8 +191,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0ab163fa1a6279e60800000000000000
-      internalID: 7968880541526530976
+      spriteID: 463f529da468698a0800000000000000
+      internalID: -6298699372802215068
       vertices: []
       indices: 
       edges: []
@@ -211,9 +211,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      zombiered_0: -6471248340592582113
-      zombiered_1: -5196647872555210904
-      zombiered_2: 7968880541526530976
+      zombiered 1_0: 771940325339444761
+      zombiered 1_1: 7381789406689506836
+      zombiered 1_2: -6298699372802215068
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
