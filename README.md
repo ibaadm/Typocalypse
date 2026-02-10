@@ -4,7 +4,7 @@
 Escape a relentless zombie horde and navigate through zombie hands reaching from underground by typing the words that appear on screen!
 
 <p align="center">
-  <a href="https://bystt.itch.io/typocalypse" target="_blank">
+  <a href="https://ibaadm.itch.io/typocalypse" target="_blank">
     <img src="https://img.shields.io/badge/Play_Now-FA5C5C?style=for-the-badge&logo=itchio&logoColor=white" alt="Play Now">
   </a>
 </p>
