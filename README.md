@@ -1,6 +1,7 @@
 # Typocalypse
 
-### An endless runner where your typing speed is your only hope for survival. Escape a relentless zombie horde and navigate through zombie hands reaching from underground by typing the words that appear on screen.
+### An endless runner where your typing speed is your only hope for survival...  
+Escape a relentless zombie horde and navigate through zombie hands reaching from underground by typing the words that appear on screen!
 
 ## Features
 * **Typing-Driven Movement**: Every step is performed by a keypress; type fast to stay ahead of the horde
