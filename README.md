@@ -13,9 +13,20 @@ Escape a relentless zombie horde and navigate through zombie hands reaching from
 
 ## Gallery
 
-| Main Menu | Gameplay (Duel) | Death Screen |
-| :---: | :---: | :---: |
-| <img src="./Gallery/menu.png" width="100%"> | <img src="./Gallery/duel.png" width="100%"> | <img src="./Gallery/death.png" width="100%"> |
+<p align="center">
+  <img src="./Gallery/menu.png" width="80%">
+  <br><b>Main Menu</b><br>
+</p>
+
+<p align="center">
+  <img src="./Gallery/duel.png" width="80%">
+  <br><b>Gameplay (Duel)</b><br>
+</p>
+
+<p align="center">
+  <img src="./Gallery/death.png" width="80%">
+  <br><b>Death Screen</b><br>
+</p>
 
 ---
 
