@@ -12,6 +12,10 @@
 
 ## Gallery
 
+| Main Menu | Gameplay (Duel) | Death Screen |
+| :---: | :---: | :---: |
+| <img src="./Gallery/menu.png" width="100%"> | <img src="./Gallery/duel.png" width="100%"> | <img src="./Gallery/death.png" width="100%"> |
+
 ---
 
 ## Play Now
