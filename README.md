@@ -4,7 +4,7 @@
 Escape a relentless zombie horde and navigate through zombie hands reaching from underground by typing the words that appear on screen!
 
 <p align="center">
-  <a href="https://bystt.itch.io/typocalypse" target="_blank">
+  <a href="https://ibaadm.itch.io/typocalypse" target="_blank">
     <img src="https://img.shields.io/badge/Play_Now-FA5C5C?style=for-the-badge&logo=itchio&logoColor=white" alt="Play Now">
   </a>
 </p>
@@ -37,4 +37,4 @@ Escape a relentless zombie horde and navigate through zombie hands reaching from
 * **Language**: C#
 
 ## Development Insights
-The aim of this project was to create a game that could help build a tangible skill in an enjoyable way, all while improving my programming and game development abilities. I have created a few games before so I had a bit of experience going into this. All code, sound effects and art were created by me, using VS Code, jsfxr and LibreSprite respectively. During the development process, I gained significant experience in networking, specifically regarding the client-server model, state synchronization, and navigating network security protocols like firewalls and IP management. Additionally, I implemented local data persistence to securely store player progress and high scores on the user's device. I'm quite happy with how it turned out: I don't plan on adding updates although I may do, and I look forward to applying what I learnt in the future.
+The aim of this project was to create a game that could help players build a tangible skill (typing) in an enjoyable way, all while improving my programming and game development abilities. I have created a few games before so I had a bit of experience going into this. All code, sound effects and art were created by me, using VS Code, jsfxr and LibreSprite respectively. Since I handled the code, art, and sound effects myself, this was a massive learning experience in end-to-end game development. On the technical side, I gained significant experience in network programming; specifically regarding the client-server model, state synchronization, and navigating security protocols like firewalls and IP management. Additionally, I implemented local data persistence to securely store player progress and high scores. I'm proud of the final result and look forward to applying these networking and architecture skills to more complex systems in the future.
